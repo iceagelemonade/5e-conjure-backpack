@@ -35,6 +35,18 @@ This also means that users can add resources found in the standard game material
 ---
 ![Entity Relationship Diagram](README-images/conjure-ERD.PNG)
 
+## API Usage
+---
+https://api.open5e.com :
+- /weapons
+- /armor
+- /magicitems
+- /classes
+- /races
+- /spells
+- /feats
+
+
 ## Schedule for Delivery
 ---
 ### Monday
