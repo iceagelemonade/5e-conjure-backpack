@@ -1,8 +1,9 @@
-# Conjure Assistant
+# Conjure Backpack
+### A Dungeon's and Dragons 5e inventory manager
 
 ## Overview
 ---
-Conjure Assistantis an app that allows users to digitally manage character sheets for Dungeons & Dragons Fifth Edition. Users can create resources for a campaign (as the Dungeon Master), or join others (as a player). This app utilizes the [Open 5e API](https://open5e.com/), to initialize a new campaigns resources, but after that each resource is controlled by the Dungeon Master who created the campaign. What does this mean? A lot! Think fireball is too powerful? Delete it! Think there should be more magic battle axes? Create it!
+Conjure Backpack is an app that allows users to digitally manage character inventories for Dungeons & Dragons Fifth Edition. Users can create campaigns (as the Dungeon Master) to manage the available items, or join others (as a player). This app utilizes the [DND 5e API](https://dnd5eapi/) to seed initial equipment available from the SRD. Dungeon Masters can choose to remove any of these items from their campaign (all are available by default), and of course, create their own.
 This also means that users can add resources found in the standard game materials that aren't included in the [SRD](https://5thsrd.org/) for a more robust collection of resources.
 
 ### Technologies Used:
@@ -21,30 +22,30 @@ This also means that users can add resources found in the standard game material
 - As a user, I want the ability to log out at any time.
 ### If campaign owner (Dungeon Master):
 - As a dungeon master, I want the ability to allow players to join my campaign.
-- As a dungeon master, I want the ability to view and edit any player's character sheets.
-- As a dungeon master, I want the ability to view, edit, create, and delete any resource (items, spells, classes, subclasses, races, etc.).
+- As a dungeon master, I want the ability to view and edit any player's inventory.
+- As a dungeon master, I want the ability to view, edit, create, and remove any item in my campaign.
 ### If campaign member (Player):
-- As a player, I want the ability to create, view, and edit my character sheet.
-- As a player, I want the ability to create, view, modify, and remove resource trackers (current HP, spell slots, ki points, etc.).
+- As a player, I want the ability to create, view, and edit my backpack.
+
 
 ## Wireframes
 ---
-![Wireframe](README-images/conjure-assistant-wireframe.png)
+![Wireframe](README-images/conjure-backpack-wireframe.png)
+---
+![Wireframe 2](README-images/conjure-backpack-wireframe-2.PNG)
 
 ## ERD's
 ---
-![Entity Relationship Diagram](README-images/conjure-ERD.PNG)
+![Entity Relationship Diagram](README-images/conjure-backpack-erd.png)
 
 ## API Usage
 ---
-https://api.open5e.com :
-- /weapons
-- /armor
-- /magicitems
-- /classes
-- /races
-- /spells
-- /feats
+API is only used for the initial seed of the DB, afterwhich all items are contained and formated for the internal API
+
+https://dnd5eapi.co/api :
+- /equipment
+- /magic-items
+
 
 
 ## Schedule for Delivery
