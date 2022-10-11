@@ -1,6 +1,7 @@
 {% layout 'layout.liquid'%}
 {% block content %}
 <div>
+    <h4>{{currentCampaign}}</h4>
     {% assign items_sorted = examples | sort: "name"%}
     <h2 class="display-6">All Examples</h2>
     <form action="items/search/" method="GET">

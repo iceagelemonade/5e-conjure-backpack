@@ -4,7 +4,7 @@ const mongoose = require('./connection')
 // import user model for populate
 const User = require('./user')
 // import campaign model for populate
-const Campaign = require('./campaign')
+// const Campaign = require('./campaign')
 
 
 // destructure the schema and model constructors from mongoose
@@ -18,8 +18,8 @@ const backpackSchema = new Schema(
 			ref: 'User',
 		},
 		campaign: {
-			type: Schema.Types.ObjectID,
-			ref: 'Campaign',
+			type: String,
+			required: true
 		},
 		items : []
 	},

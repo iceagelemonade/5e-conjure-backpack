@@ -65,8 +65,10 @@ router.post('/login', async (req, res) => {
 					req.session.username = user.username
 					req.session.loggedIn = true
 					req.session.userId = user.id
+					req.session.currentCampaign = ''
+					req.session.isMaster = false
 
-          			const { username, loggedIn, userId } = req.session
+          			const { username, loggedIn, userId, currentCampaign, isMaster } = req.session
 
 					console.log('session user id', req.session.userId)
 					// redirect to /examples if login is successful
@@ -99,7 +101,7 @@ router.post('/login', async (req, res) => {
 // 	})
 // })
 
-router.put('/logout', (req, res) => {
+router.get('/logout', (req, res) => {
 	
 		req.session.destroy(() => {
 			res.redirect('/')

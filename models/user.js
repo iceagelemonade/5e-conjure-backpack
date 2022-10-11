@@ -13,8 +13,8 @@ const UserSchema = new Schema(
 			type: String, 
 			required: true 
 		},
-		currentCampaign : String,
-		isMaster : Boolean,
+		currentCampaign: String,
+		isMaster: Boolean,
 	},
 	{ timestamps: true }
 )

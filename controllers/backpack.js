@@ -28,9 +28,10 @@ router.use((req, res, next) => {
 router.get('/', (req, res) => {
 	Item.find({})
 		.then(examples => {
+			const username = req.session.username
+			const loggedIn = req.session.loggedIn
 			
-			const {username, loggedIn, userId, isMaster, currentCamapaign} = req.session
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCamapaign })
+			res.render('examples/index', { examples, username, loggedIn })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)

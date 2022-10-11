@@ -6,6 +6,8 @@ const express = require("express")
 const middleware = require('./utils/middleware')
 const ItemRouter = require('./controllers/item')
 const UserRouter = require('./controllers/user')
+const CampaignRouter = require('./controllers/campaign')
+const BackpackRouter = require('./controllers/backpack')
 const User = require("./models/user")
 // SEE MORE DEPENDENCIES IN ./utils/middleware.js
 // user and resource routes linked in ./utils/middleware.js
@@ -23,6 +25,8 @@ middleware(app)
 
 app.use('/auth', UserRouter)
 app.use('/items', ItemRouter)
+app.use('/campaigns', CampaignRouter)
+app.use('/backpacks', BackpackRouter)
 
 app.get('/', (req, res) => {
     const { username, userId, loggedIn } = req.session

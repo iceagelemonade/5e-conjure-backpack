@@ -1,0 +1,19 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<div class="container-sm">
+    <form action="/campaigns" method="POST">
+        <fieldset>
+            <legend>Create New Campaign</legend>
+            <label class="form-label">Campaign Name: </label>
+            <input 
+                type="text" 
+                name="name" 
+                placeholder="enter name..."
+                class="form-control"
+            >
+            
+        </fieldset>
+        <input type="submit" value="Create New Campaign" class="btn btn-success">
+    </form>
+</div>
+{% endblock %}

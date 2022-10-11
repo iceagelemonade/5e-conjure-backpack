@@ -1,7 +1,8 @@
 // Import Dependencies
 const express = require('express')
 const Example = require('../models/example')
-const Item = require('../models/item')
+const Campaign = require('../models/campaign')
+const User = require('../models/user')
 const axios = require('axios').default
 
 
@@ -26,27 +27,13 @@ router.use((req, res, next) => {
 
 // index ALL
 router.get('/', (req, res) => {
-	Item.find({})
-		.then(examples => {
-			
-			const {username, loggedIn, userId, isMaster, currentCamapaign} = req.session
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCamapaign })
-		})
-		.catch(error => {
-			res.redirect(`/error?error=${error}`)
-		})
-})
-
-
-router.get('/search/', (req, res) => {
-	const term = req.query.name
-	console.log(term)
-	Item.find({ name: term })
-		.then(examples => {
+	Campaign.find({})
+		.then(campaigns => {
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
+			const userId = req.session.userId
 			
-			res.render('examples/show', { examples, username, loggedIn })
+			res.render('campaigns/index', { campaigns, username, loggedIn, userId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -58,9 +45,9 @@ router.get('/search/', (req, res) => {
 router.get('/mine', (req, res) => {
     // destructure user info from req.session
     const { username, userId, loggedIn } = req.session
-	Item.find({ owner: userId })
-		.then(examples => {
-			res.render('examples/index', { examples, username, loggedIn })
+	Campaign.find({ owner: userId })
+		.then(campaigns => {
+			res.render('campaigns/index', { campaigns, username, loggedIn })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -70,18 +57,17 @@ router.get('/mine', (req, res) => {
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
 	const { username, userId, loggedIn } = req.session
-	res.render('examples/new', { username, loggedIn })
+	res.render('campaigns/new', { username, loggedIn, userId })
 })
 
 // create -> POST route that actually calls the db and makes a new document
 router.post('/', (req, res) => {
-	req.body.ready = req.body.ready === 'on' ? true : false
 
 	req.body.owner = req.session.userId
-	Item.create(req.body)
-		.then(example => {
-			console.log('this was returned from create', example)
-			res.redirect('/examples')
+	Campaign.create(req.body)
+		.then(campaign => {
+			console.log('this was returned from create', campaign)
+			res.redirect('/campaigns')
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -91,23 +77,47 @@ router.post('/', (req, res) => {
 // edit route -> GET that takes us to the edit form view
 router.get('/:id/edit', (req, res) => {
 	// we need to get the id
-	const exampleId = req.params.id
-	Item.findById(exampleId)
-		.then(example => {
-			res.render('examples/edit', { example })
+	const campaignId = req.params.id
+	Campaign.findById(campaignId)
+		.then(campaign => {
+			
+			res.redirect('/items')
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
 
+// updates session to have current campaign id
+router.put('/:id/enter', (req, res) => {
+	const campaignId = req.params.id
+	const username = req.session.username
+	const userId = req.session.userId
+	const loggedIn = req.session.loggedIn
+	req.session.currentCampaign = campaignId
+	
+	Campaign.findById(campaignId)
+		.then(campaign => {
+			if (campaign.owner == userId ) {
+				req.session.isMaster = true
+			}
+			res.redirect(`/items`)
+		})
+		.catch((error) => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
+
+
+
 // update route
 router.put('/:id', (req, res) => {
 	const exampleId = req.params.id
 	req.body.ready = req.body.ready === 'on' ? true : false
 
-	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
-		.then(example => {
+	Campaign.findByIdAndUpdate(exampleId, req.body, { new: true })
+		.then(campaign => {
 			res.redirect(`/examples/${example.id}`)
 		})
 		.catch((error) => {
@@ -118,10 +128,10 @@ router.put('/:id', (req, res) => {
 // show route
 router.get('/:id', (req, res) => {
 	const exampleId = req.params.id
-	Item.findById(exampleId)
-		.then(example => {
+	Campaign.findById(exampleId)
+		.then(campaign => {
             const {username, loggedIn, userId} = req.session
-			res.render('examples/show', { example, username, loggedIn, userId })
+			res.render('campaigns/show', { campaign, username, loggedIn, userId })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -131,30 +141,14 @@ router.get('/:id', (req, res) => {
 // delete route
 router.delete('/:id', (req, res) => {
 	const exampleId = req.params.id
-	Item.findByIdAndRemove(exampleId)
-		.then(example => {
-			res.redirect('/examples')
+	Campaign.findByIdAndRemove(exampleId)
+		.then(campaign => {
+			res.redirect('/campaigns')
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
-
-
-
-
-// 	Example.find({})
-// 		.then(examples => {
-// 			const username = req.session.username
-// 			const loggedIn = req.session.loggedIn
-			
-// 			res.render('examples/index', { examples, username, loggedIn })
-// 		})
-// 		.catch(error => {
-// 			res.redirect(`/error?error=${error}`)
-// 		})
-// })
-
 
 // Export the Router
 module.exports = router
