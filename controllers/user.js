@@ -89,11 +89,24 @@ router.post('/login', async (req, res) => {
 })
 
 // logout route -> destroy the session
-router.get('/logout', (req, res) => {
-	req.session.destroy(() => {
-		res.redirect('/')
+// router.put('/logout', (req, res) => {
+// 	const userId = req.session.userId
+// 	User.findByIdAndUpdate(userId, {currentCampaign : null, isMaster : false}, { new: true })
+// 	.then(drop => {
+// 		req.session.destroy(() => {
+// 			res.redirect('/')
+// 		})
+// 	})
+// })
+
+router.put('/logout', (req, res) => {
+	
+		req.session.destroy(() => {
+			res.redirect('/')
+		})
 	})
-})
+
+
 
 // Export the Router
 module.exports = router

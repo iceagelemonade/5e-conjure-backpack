@@ -1,22 +1,48 @@
 {% layout 'layout.liquid'%}
 {% block content %}
 <div>
+    {% assign items_sorted = examples | sort: "name"%}
     <h2 class="display-6">All Examples</h2>
+    <form action="items/search/" method="GET">
+        <fieldset class="input-group mb-3">
+            {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
+            <input class="form-control" list="datalistOptions" id="exampleDataList" name ="name" placeholder="Type to search...">
+            <input type="submit" value="Search" class="btn btn-primary">
+                
+            <datalist id="datalistOptions">
+                {% for item in items_sorted %}
+                    <option value ="{{item.name}}">      
+                {% endfor %}
+            </datalist>
+            
+        </fieldset>
+</form>  
+
+
     <div class="row">
-        {% for example in examples %}
+
+
+
+        
+
+
+        {% for example in items_sorted %}
         <div class="card" style="width: 18rem;">
-            <h5 class="card-header">{{ example.title }}</h5>
+            <h5 class="card-header">{{ example.name }}</h5>
             <div class="card-body">
                 <h5 class="card-title">
                     Ready?: {{ example.ready }}
                 </h5>
-                <p class="card-text">
-                    Body: {{ example.body }}
+                <p class="card-text text-truncate" style="height: 20vh">>
+                    Desc: 
+                    {% for line in example.desc%}
+                        {{line}}<br />
+                    {% endfor %}
                 </p>
                 <p class="card-text">
-                    Amount: {{ example.amount }}
+                    weight: {{ example.weight }}
                 </p>
-                <a href="/examples/{{ example.id }}" class="btn btn-info">
+                <a href="/items/{{ example.id }}" class="btn btn-info">
                     View {{ example.title }}
                 </a>
             </div>

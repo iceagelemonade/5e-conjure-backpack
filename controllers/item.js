@@ -1,7 +1,7 @@
 // Import Dependencies
 const express = require('express')
 const Example = require('../models/example')
-const Test = require('../models/test')
+const Item = require('../models/item')
 const axios = require('axios').default
 
 
@@ -26,7 +26,7 @@ router.use((req, res, next) => {
 
 // index ALL
 router.get('/', (req, res) => {
-	Example.find({})
+	Item.find({})
 		.then(examples => {
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
@@ -38,30 +38,28 @@ router.get('/', (req, res) => {
 		})
 })
 
-// Create
 
-router.get('/create', (req, res) => {
-	axios('https://www.dnd5eapi.co/api/equipment')
-		.then(apiResponse => {
-			// console.log(apiResponse)
-			// createArmor(apiResponse)
-			const list = createEquipment(apiResponse.data)
-			// console.log(list)
-			res.send(list)
+router.get('/search/', (req, res) => {
+	const term = req.query.name
+	console.log(term)
+	Item.find({ name: term })
+		.then(examples => {
+			const username = req.session.username
+			const loggedIn = req.session.loggedIn
+			
+			res.render('examples/show', { examples, username, loggedIn })
 		})
 		.catch(error => {
-			res.send(error)
+			res.redirect(`/error?error=${error}`)
 		})
-		
 })
-
 
 
 // index that shows only the user's examples
 router.get('/mine', (req, res) => {
     // destructure user info from req.session
     const { username, userId, loggedIn } = req.session
-	Example.find({ owner: userId })
+	Item.find({ owner: userId })
 		.then(examples => {
 			res.render('examples/index', { examples, username, loggedIn })
 		})
@@ -81,7 +79,7 @@ router.post('/', (req, res) => {
 	req.body.ready = req.body.ready === 'on' ? true : false
 
 	req.body.owner = req.session.userId
-	Example.create(req.body)
+	Item.create(req.body)
 		.then(example => {
 			console.log('this was returned from create', example)
 			res.redirect('/examples')
@@ -95,7 +93,7 @@ router.post('/', (req, res) => {
 router.get('/:id/edit', (req, res) => {
 	// we need to get the id
 	const exampleId = req.params.id
-	Example.findById(exampleId)
+	Item.findById(exampleId)
 		.then(example => {
 			res.render('examples/edit', { example })
 		})
@@ -109,7 +107,7 @@ router.put('/:id', (req, res) => {
 	const exampleId = req.params.id
 	req.body.ready = req.body.ready === 'on' ? true : false
 
-	Example.findByIdAndUpdate(exampleId, req.body, { new: true })
+	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
 		.then(example => {
 			res.redirect(`/examples/${example.id}`)
 		})
@@ -121,7 +119,7 @@ router.put('/:id', (req, res) => {
 // show route
 router.get('/:id', (req, res) => {
 	const exampleId = req.params.id
-	Example.findById(exampleId)
+	Item.findById(exampleId)
 		.then(example => {
             const {username, loggedIn, userId} = req.session
 			res.render('examples/show', { example, username, loggedIn, userId })
@@ -134,7 +132,7 @@ router.get('/:id', (req, res) => {
 // delete route
 router.delete('/:id', (req, res) => {
 	const exampleId = req.params.id
-	Example.findByIdAndRemove(exampleId)
+	Item.findByIdAndRemove(exampleId)
 		.then(example => {
 			res.redirect('/examples')
 		})
