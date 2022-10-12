@@ -59,20 +59,6 @@ router.post('/', (req, res) => {
 	})
 })
 
-router.get('/backpack', (req, res) => {
-	
-	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-	
-	Item.find({})
-		.then(items => {
-			
-			
-			res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
-		})
-		.catch(error => {
-			res.redirect(`/error?error=${error}`)
-		})
-})
 
 router.get('/search/', (req, res) => {
 	const term = req.query.name
@@ -152,6 +138,8 @@ router.put('/:id', (req, res) => {
 })
 
 // show route
+// Here we want to display items in a players pack. since the backpack only knows the id of a given item we will use the $in operator after finding the backpack by the sent id
+// then, we only send the items registered to the given backpack, and let our viewer layout determin wether or not they're still registered to the campaign via our session value
 router.get('/:id', (req, res) => {
 	const backpackId = req.params.id
 
@@ -162,7 +150,6 @@ router.get('/:id', (req, res) => {
 		
 			Item.find({ _id: { $in: backpack.items}})
 				.then(items => {
-					console.log(items)
 				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session					
 				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 				})
@@ -176,6 +163,33 @@ router.get('/:id', (req, res) => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
+
+// put route for removing items from a backpack
+router.put('/:backpackId/:itemId', (req, res) => {
+	const backpackId = req.params.backpackId
+	const itemId = req.params.itemId
+
+	Backpack.findById(backpackId)
+		.then(backpack => {
+
+			for ( let i = 0; i < backpack.items.length; i++){
+				if ( backpack.items[i] == itemId) {
+					backpack.items.splice(i,1)
+					console.log('new arr ', backpack.items)
+					i = backpack.items.length
+					backpack.save()
+				}
+			}
+			
+		
+			res.redirect(`/backpacks/${backpackId}`)
+		})
+		.catch((error) => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
+
 
 // delete route
 router.delete('/:id', (req, res) => {
