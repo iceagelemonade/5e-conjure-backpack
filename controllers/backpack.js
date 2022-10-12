@@ -1,6 +1,7 @@
 // Import Dependencies
 const express = require('express')
 const Example = require('../models/example')
+const Backpack = require('../models/backpack')
 const Item = require('../models/item')
 const axios = require('axios').default
 
@@ -26,12 +27,13 @@ router.use((req, res, next) => {
 
 // index ALL
 router.get('/', (req, res) => {
-	Item.find({})
-		.then(examples => {
-			const username = req.session.username
-			const loggedIn = req.session.loggedIn
+	Backpack.find({})
+		.then(backpacks => {
+			req.session.currentBackpackName = ''
+			req.session.currentBackpackId = ''
+			const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 			
-			res.render('examples/index', { examples, username, loggedIn })
+			res.render('backpacks/index', { backpacks, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)

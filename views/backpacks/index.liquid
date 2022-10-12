@@ -1,0 +1,28 @@
+{% layout 'layout.liquid'%}
+{% block content %}
+<div>
+    <h4 class="display-6">{{currentCampaignName}}</h4>
+    <hr>
+    <h4 class="display-10">Backpacks:</h4>
+    <div class="row">
+        {% for backpack in backpacks%}
+            {% if  backpack.campaign == currentCampaignId and backpack.owner == userId or isMaster == true%}
+                <div class="card" style="width: 18rem;">
+                    <h5 class="card-header">{{ backpack.name }}</h5>
+                    <div class="card-body">
+                        <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-info">
+                            Edit
+                        </a>
+                        <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
+                            <input class="btn btn-info" type="submit" value="Enter">
+                        </form>
+                    </div>
+                </div>                
+            {% endif %}
+        {% endfor %}
+    </div>
+
+     
+
+</div>
+{% endblock %}

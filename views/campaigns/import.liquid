@@ -1,0 +1,11 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<h4>{{campaign.name}}</h4>
+<div class="container-sm">
+    <h4>Would you like to import all equipment from the SRD? <small><i>(this cannot be done later)</i></small>
+    <form action="/campaigns/import/{{campaign.id}}?_method=PUT" method="POST">
+        <input type="submit" value="Yes" class="btn btn-success">
+        <a href="/campaigns" class ="btn btn-success">No</a>
+    </form>
+</div>
+{% endblock %}

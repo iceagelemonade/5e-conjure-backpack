@@ -3,6 +3,7 @@ const express = require('express')
 const Example = require('../models/example')
 const Campaign = require('../models/campaign')
 const User = require('../models/user')
+const Item = require('../models/item')
 const axios = require('axios').default
 
 
@@ -52,15 +53,38 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
 	console.log(req.body)
 	req.body.owner = req.session.userId
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Campaign.create(req.body)
 		.then(campaign => {
-			console.log('this was returned from create', campaign)
+			
+			res.render('campaigns/import', { campaign, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
+// put route for adding SRD(seeded) items to campaign
+router.put('/import/:id', (req, res) => {
+	const campaignId = req.params.id
+	Item.find({ fromSeed: true})
+		.then(items => {
+			
+			items.forEach(item => {
+				console.log(item)
+				item.inCampaign.push(campaignId)
+				item.save()
+			})
+		})
+		.then(items => {
 			res.redirect('/campaigns')
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
+
+
 
 // edit route -> GET that takes us to the edit form view
 router.get('/:id/edit', (req, res) => {
@@ -87,7 +111,7 @@ router.put('/:id/enter', (req, res) => {
 			if (campaign.owner == userId ) {
 				req.session.isMaster = true
 			}
-			res.render(`/backpacks/index`, { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
+			res.redirect(`../../backpacks/`)
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)

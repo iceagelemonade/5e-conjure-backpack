@@ -12,7 +12,7 @@ const { Schema, model } = mongoose
 
 const backpackSchema = new Schema(
 	{
-		characterName: String,
+		name: String,
 		owner: {
 			type: Schema.Types.ObjectID,
 			ref: 'User',
