@@ -10,10 +10,11 @@
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
                         <p>{{ campaign.description }}</p>
-                        <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-info">
-                            Edit
-                        </a>
+                        
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
+                            <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-info">
+                                Edit
+                            </a>
                             <input class="btn btn-info" type="submit" value="Enter">
                         </form>
                     </div>

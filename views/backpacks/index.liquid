@@ -3,8 +3,13 @@
 <div>
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <hr>
+    {% if isMaster == false %}
+        <a href="./new" class = "btn btn-success">Add Backpack</a>
+    {% endif %}
     <h4 class="display-10">Backpacks:</h4>
+    
     <div class="row">
+        
         {% for backpack in backpacks%}
             {% if  backpack.campaign == currentCampaignId and backpack.owner == userId or isMaster == true%}
                 <div class="card" style="width: 18rem;">

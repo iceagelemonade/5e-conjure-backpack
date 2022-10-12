@@ -41,6 +41,25 @@ router.get('/', (req, res) => {
 })
 
 
+// new route -> GET route that renders our page with the form
+router.get('/new', (req, res) => {
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	res.render('backpacks/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+})
+
+// post route for new backpack
+router.post('/', (req, res) => {
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	req.body.campaign = currentCampaignId
+	req.body.owner = userId
+	
+	Backpack.create(req.body)
+	.then(backpack => {
+		res.redirect('/backpacks')
+	})
+})
+
+
 router.get('/search/', (req, res) => {
 	const term = req.query.name
 	console.log(term)

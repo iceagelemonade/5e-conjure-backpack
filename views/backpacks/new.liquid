@@ -1,0 +1,21 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<h4 class="display-6">{{currentCampaignName}}</h4>
+<hr>
+<div class="container-sm">
+    <form action="/backpacks" method="POST">
+        <fieldset>
+            <legend>Create New Backpack</legend>
+            <label class="form-label">Backpack Name: </label>
+            <input 
+                type="text" 
+                name="name"
+                required
+                placeholder="example: 'Hilda's Sack' or 'Sivana's Chest'"
+                class="form-control"   
+            >
+        </fieldset>
+        <input type="submit" value="Create New Backpack" class="btn btn-success">
+    </form>
+</div>
+{% endblock %}
