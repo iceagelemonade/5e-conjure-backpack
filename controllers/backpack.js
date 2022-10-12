@@ -59,6 +59,20 @@ router.post('/', (req, res) => {
 	})
 })
 
+router.get('/backpack', (req, res) => {
+	
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	
+	Item.find({})
+		.then(items => {
+			
+			
+			res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
 
 router.get('/search/', (req, res) => {
 	const term = req.query.name
@@ -139,12 +153,25 @@ router.put('/:id', (req, res) => {
 
 // show route
 router.get('/:id', (req, res) => {
-	const exampleId = req.params.id
-	Item.findById(exampleId)
-		.then(example => {
-            const {username, loggedIn, userId} = req.session
-			res.render('examples/show', { example, username, loggedIn, userId })
+	const backpackId = req.params.id
+
+	Backpack.findById(backpackId)
+		.then(backpack => {
+            req.session.currentBackpackId = backpack.id
+			req.session.currentBackpackName = backpack.name
+		
+			Item.find({ _id: { $in: backpack.items}})
+				.then(items => {
+					console.log(items)
+				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session					
+				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+				})
+				.catch((error) => {
+					res.redirect(`/error?error=${error}`)
+				})
+			
 		})
+		
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
 		})

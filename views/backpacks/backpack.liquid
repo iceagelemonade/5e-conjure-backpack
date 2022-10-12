@@ -1,0 +1,60 @@
+{% layout 'layout.liquid'%}
+{% block content %}
+<div>
+    <h4 class="display-6">{{currentCampaignName}}</h4>
+    <h4 class="display-6">{{currentBackpackName}}</h4>
+    <hr>
+    {% assign items_sorted = items | sort: "name"%}
+    {% comment %} <h2 class="display-6">All Examples</h2> {% endcomment %}
+    <form action="items/search/" method="GET">
+        <fieldset class="input-group mb-3">
+            {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
+            <input class="form-control" list="datalistOptions" id="exampleDataList" name ="name" placeholder="Type to search...">
+            <input type="submit" value="Search" class="btn btn-primary">
+                
+            <datalist id="datalistOptions">
+                {% for item in items_sorted %}
+                    {% if item.inCampaign contains currentCampaignId %}
+                        <option value ="{{item.name}}">
+                    {% endif %}
+                {% endfor %}
+            </datalist>
+            
+        </fieldset>
+</form>  
+
+
+    <div class="row">
+
+
+
+        
+
+
+        {% for example in items_sorted %}
+            {% if example.inCampaign contains currentCampaignId %}
+                <div class="card" style="width: 18rem;">
+                    <h5 class="card-header">{{ example.name }}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Ready?: {{ example.ready }}
+                        </h5>
+                        <p class="card-text text-truncate" style="height: 20vh">>
+                            Desc: 
+                            {% for line in example.desc%}
+                                {{line}}<br />
+                            {% endfor %}
+                        </p>
+                        <p class="card-text">
+                            weight: {{ example.weight }}
+                        </p>
+                        <a href="/items/{{ example.id }}" class="btn btn-info">
+                            View {{ example.title }}
+                        </a>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
