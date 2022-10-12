@@ -22,7 +22,7 @@ const itemSchema = new Schema(
 			type: Boolean,
 			required : true,
 			default : false
-		}
+		},
 	},
 	{ timestamps: true }
 )

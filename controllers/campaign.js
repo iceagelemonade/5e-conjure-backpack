@@ -29,30 +29,18 @@ router.use((req, res, next) => {
 router.get('/', (req, res) => {
 	Campaign.find({})
 		.then(campaigns => {
-			const username = req.session.username
-			const loggedIn = req.session.loggedIn
-			const userId = req.session.userId
-			
-			res.render('campaigns/index', { campaigns, username, loggedIn, userId })
+			req.session.currentCampaignName = ''
+			req.session.currentCampaignId = ''
+			req.session.currentBackpackName = ''
+			req.session.currentBackpackId = ''
+			const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+			res.render('campaigns/index', { campaigns, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
 
-
-// index that shows only the user's examples
-router.get('/mine', (req, res) => {
-    // destructure user info from req.session
-    const { username, userId, loggedIn } = req.session
-	Campaign.find({ owner: userId })
-		.then(campaigns => {
-			res.render('campaigns/index', { campaigns, username, loggedIn })
-		})
-		.catch(error => {
-			res.redirect(`/error?error=${error}`)
-		})
-})
 
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
@@ -62,7 +50,7 @@ router.get('/new', (req, res) => {
 
 // create -> POST route that actually calls the db and makes a new document
 router.post('/', (req, res) => {
-
+	console.log(req.body)
 	req.body.owner = req.session.userId
 	Campaign.create(req.body)
 		.then(campaign => {
@@ -78,10 +66,10 @@ router.post('/', (req, res) => {
 router.get('/:id/edit', (req, res) => {
 	// we need to get the id
 	const campaignId = req.params.id
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Campaign.findById(campaignId)
 		.then(campaign => {
-			
-			res.redirect('/items')
+			res.render('campaigns/edit', { campaign, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -91,17 +79,15 @@ router.get('/:id/edit', (req, res) => {
 // updates session to have current campaign id
 router.put('/:id/enter', (req, res) => {
 	const campaignId = req.params.id
-	const username = req.session.username
-	const userId = req.session.userId
-	const loggedIn = req.session.loggedIn
-	req.session.currentCampaign = campaignId
-	
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Campaign.findById(campaignId)
 		.then(campaign => {
+			req.session.currentCampaignId = campaign.id
+			req.session.currentCampaignName = campaign.name
 			if (campaign.owner == userId ) {
 				req.session.isMaster = true
 			}
-			res.redirect(`/items`)
+			res.render(`/backpacks/index`, { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -113,12 +99,11 @@ router.put('/:id/enter', (req, res) => {
 
 // update route
 router.put('/:id', (req, res) => {
-	const exampleId = req.params.id
-	req.body.ready = req.body.ready === 'on' ? true : false
+	const campaignId = req.params.id
 
-	Campaign.findByIdAndUpdate(exampleId, req.body, { new: true })
+	Campaign.findByIdAndUpdate(campaignId, { name: req.body.name, description: req.body.description}, { new: true })
 		.then(campaign => {
-			res.redirect(`/examples/${example.id}`)
+			res.redirect('/campaigns')
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)

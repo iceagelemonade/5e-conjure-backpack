@@ -10,7 +10,11 @@ const { Schema, model } = mongoose
 const campaignSchema = new Schema(
 	{
 
-		name: String,
+		name: {
+			type: String,
+			requried: true
+		},
+		description: String,
 		owner: {
 			type: Schema.Types.ObjectID,
 			ref: 'User',

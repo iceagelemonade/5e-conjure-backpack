@@ -29,8 +29,8 @@ router.get('/', (req, res) => {
 	Item.find({})
 		.then(examples => {
 			
-			const {username, loggedIn, userId, isMaster, currentCamapaign} = req.session
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCamapaign })
+			const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackIdn })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)

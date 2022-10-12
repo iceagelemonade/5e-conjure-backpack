@@ -1,7 +1,6 @@
 {% layout 'layout.liquid'%}
 {% block content %}
 <div>
-    
     <h2 class="display-6">Campaigns I Manage:</h2>
     <hr>
     <div class="row">
@@ -10,7 +9,8 @@
                 <div class="card" style="width: 18rem;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
-                        <a href="/{{ campaign.id }}/edit" class="btn btn-info">
+                        <p>{{ campaign.description }}</p>
+                        <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-info">
                             Edit
                         </a>
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
@@ -30,6 +30,7 @@
                 <div class="card" style="width: 18rem;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
+                        <p>{{ campaign.description }}</p>
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
                             <input class="btn btn-info" type="submit" value="Enter">
                         </form>

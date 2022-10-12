@@ -7,10 +7,21 @@
             <label class="form-label">Campaign Name: </label>
             <input 
                 type="text" 
-                name="name" 
+                name="name"
+                required
                 placeholder="enter name..."
                 class="form-control"
+                
             >
+            
+            <label class="form-label">Campaign Description: </label>
+            <textarea 
+                name="description" 
+                placeholder="enter description..."
+                class="form-control"
+                rows="4"    
+            >
+            </textarea>
             
         </fieldset>
         <input type="submit" value="Create New Campaign" class="btn btn-success">

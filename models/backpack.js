@@ -21,7 +21,11 @@ const backpackSchema = new Schema(
 			type: String,
 			required: true
 		},
-		items : []
+		items : {
+			type: [],
+			required: true,
+			default: []
+		}
 	},
 	{ timestamps: true }
 )

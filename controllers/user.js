@@ -65,14 +65,18 @@ router.post('/login', async (req, res) => {
 					req.session.username = user.username
 					req.session.loggedIn = true
 					req.session.userId = user.id
-					req.session.currentCampaign = ''
 					req.session.isMaster = false
+					req.session.currentCampaignName = ''
+					req.session.currentCampaignId = ''
+					req.session.currentBackpackName = ''
+					req.session.currentBackpackId = ''
+					
 
-          			const { username, loggedIn, userId, currentCampaign, isMaster } = req.session
+          			const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 
 					console.log('session user id', req.session.userId)
 					// redirect to /examples if login is successful
-					res.redirect('/')
+					res.render('auth/select', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 				} else {
 					// send an error if the password doesnt match
 					res.redirect('/error?error=username%20or%20password%20incorrect')
