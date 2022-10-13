@@ -11,7 +11,7 @@
                     <div class="card-body">
                         <p>
                             {% for player in campaign.players%}
-                                &nbsp;{{player}},
+                                |{{player}}|&nbsp;
                             {% endfor %} 
                         </p>
                         
@@ -37,7 +37,7 @@
                     <div class="card-body">
                         <p>
                             {% for player in campaign.players%}
-                                &nbsp;{{player}},
+                                |{{player}}|&nbsp;
                             {% endfor %} 
                         </p>
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">

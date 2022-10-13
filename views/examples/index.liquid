@@ -59,9 +59,6 @@
                 <h5 class="card-title">
                 Type: {{ example.category }}
                 </h5>
-                {% comment %} <p class="card-text" style="height: 20vh; overflow:auto;"> 
-                    {{example.desc}}
-                </p> {% endcomment %}
                 <p class="card-text">
                 {% if example.weight%}
                     weight: {{ example.weight }}<br />
@@ -72,9 +69,24 @@
                 </p>
             </div>
             <div class="card-footer">
-                <a href="/items/{{ example.id }}" class="btn btn-info">
-                    View {{ example.title }}
-                </a>
+                <div class="btn-group" style="width:100%">
+                    {% if isMaster and currentBackpackId == ""%}
+                        <form action="/campaigns/remove{{ example.id }}?_method=PUT" method="POST">
+                            <input type="submit" value="Remove from {{currentCampaignName}}" class="btn btn-danger">
+                        </form>
+                    {% else %}
+                        {% if currentBackpackId != "" %}
+                            <form action="/backpacks/add/{{ example.id }}?_method=PUT" method="POST">
+                                <input type="submit" value="Add to {{currentBackpackName}}" class="btn btn-success">
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class ="btn-group" style="width:100%">
+                    <a href="/items/{{ example.id }}" class="btn btn-info">
+                        View {{ example.title }}
+                    </a>
+                </div>
             </div>
         </div>
         {% endfor %}

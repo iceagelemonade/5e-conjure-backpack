@@ -6,64 +6,84 @@
 <div>
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <h4 class="display-6">{{currentBackpackName}}</h4>
-    <a class="btn btn-success" href="../library">Add Items to Backpack</a>
+    <a class="btn btn-success" href="../items/">Add Items to Backpack</a>
     <hr>
     {% assign items_sorted = items | sort: "name"%}
     {% comment %} <h2 class="display-6">All Examples</h2> {% endcomment %}
-  
-        <form action="items/search/" method="GET">
-            <fieldset class="input-group mb-3">
-                {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
-                <input class="form-control" autocomplete="off" list="datalistOptions" id="exampleDataList" name ="name" placeholder="Type to search...">
-                <input type="submit" value="Search" class="btn btn-primary">
-
-                <datalist id="datalistOptions">
-                    {% for item in items_sorted %}
-                        {% if item.inCampaign contains currentCampaignId %}
-                            <option value ="{{item.name}}">
-                        {% endif %}
-                    {% endfor %}
-                </datalist>
-
+    <h2 class="display-8">All Items:</h2>
+    <form action="../../../items/search/" method="GET">
+        <fieldset class="input-group mb-3">
+            {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
+            <input class="form-control" list="datalistOptions" id="dataList" name ="name" placeholder="Type to search items..." autocomplete="off">
+            <input type="submit" value="Search" class="btn btn-primary">
+                
+            <datalist id="datalistOptions">
+                {% for item in items_sorted %}
+                    <option value ="{{item.name}}">      
+                {% endfor %}
+            </datalist>
+            
             </fieldset>
-        </form>
-    
+    </form>  
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="../../../items/">All</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../../items/filter/Gear">Gear</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../../items/filter/Weapon">Weapons</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../../items/filter/Armor">Armor</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="../../../items/filter/Magic%20Item">Magic Items</a>
+        </li>
+          {% if isMaster %}
+            <li class="nav-item">
+                <a class="nav-link active" href="/items/mine/">Created by {{username}}</a>
+            </li>
+        {% endif %}
 
-
-    <div class="row">
-
-
-
-        
-
-
+    </ul>
+    {% if items_sorted.length < 1%}
+        <h2 class="display-6">{{username}} opened the manifest, but there was nothing there.</h2>
+    {% endif %}
+    <div class="row">     
         {% for example in items_sorted %}
-            {% if example.inCampaign contains currentCampaignId %}
-                <div class="card" style="width: 18rem;">
-                    <h5 class="card-header">{{ example.name }}</h5>
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Ready?: {{ example.ready }}
-                        </h5>
-                        <p class="card-text text-truncate" style="height: 20vh">>
-                            Desc: {{example.desc}}
-                            
-                        </p>
-                        <p class="card-text">
-                            weight: {{ example.weight }}
-                        </p>
-                        <form action="{{currentBackpackId}}/{{example.id}}?_method=PUT" method="POST">
-                            <input type="submit" value="Remove" class="btn btn-danger">
-                            
-                            <a href="../items/{{ example.id }}" class="btn btn-info">
-                                View {{ example.title }}
-                            </a>
-                        
-                        </form>
-                    </div>
+        <div class="card" style="width: 18rem;">
+            <h5 class="card-header">{{ example.name }}</h5>
+            <div class="card-body">
+                <h5 class="card-title">
+                Type: {{ example.category }}
+                </h5>
+                <p class="card-text">
+                {% if example.weight%}
+                    weight: {{ example.weight }}<br />
+                {% endif %}
+                {% if example.cost%}
+                    cost: {{ example.cost }}
+                {% endif %}
+                </p>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group" style="width:100%">
+                    <form action="{{currentBackpackId}}/{{example.id}}?_method=PUT" method="POST">
+                        <input type="submit" value="Remove" class="btn btn-danger">
+                    
+               
+                    <a href="/items/{{ example.id }}" class="btn btn-info">
+                        View {{ example.title }}
+                    </a>
                 </div>
-            {% endif %}
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>
 {% endblock %}
+
+
+      

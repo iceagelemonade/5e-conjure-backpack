@@ -47,6 +47,21 @@ router.get('/new', (req, res) => {
 	res.render('backpacks/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 })
 
+// put route for adding to backpack
+router.put('/add/:id', (req, res) => {
+	const itemId = req.params.id
+	const backpackId = req.session.currentBackpackId
+	Backpack.findById(backpackId)
+		.then(backpack => {
+			backpack.items.push(itemId)
+			backpack.save()
+			res.redirect(`/items/`)
+		})
+		.catch((error) => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
 // post route for new backpack
 router.post('/', (req, res) => {
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
@@ -109,6 +124,9 @@ router.post('/', (req, res) => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
+
+
+
 
 // edit route -> GET that takes us to the edit form view
 router.get('/:id/edit', (req, res) => {

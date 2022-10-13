@@ -20,12 +20,19 @@
         {% if example.owner == userId and example.owner != null %}
         <div class="btn-group">
 
-            <a href="/examples/{{ example.id }}/edit" class="btn btn-primary">Edit</a>
-            <form action="/examples/{{ example.id }}?_method=DELETE" method="POST">
+            <a href="/items/{{ example.id }}/edit" class="btn btn-primary">Edit</a>
+            <form action="/items/{{ example.id }}?_method=DELETE" method="POST">
                 <input type="submit" value="Delete" class="btn btn-danger">
             </form>
         </div>
         {% endif %}
+        <div class="card-footer btn-group">
+            {% if currentBackpackId != "" %}
+                <form action="/backpacks/add/{{ example.id }}?_method=PUT" method="POST">
+                    <input type="submit" value="Add to {{currentBackpackName}}" class="btn btn-success">
+                </form>
+            {% endif %}
+        </div>
     </article>
 </div>
 {% endblock %}

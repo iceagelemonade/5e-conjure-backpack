@@ -1,41 +1,66 @@
 {% layout 'layout.liquid' %}
 {% block content %}
 <div class="container-sm">
-    <form action="/examples" method="POST">
+    <form action="/items/{{item.id}}?_method=PUT" method="POST">
         <fieldset>
-            <legend>Create New Example</legend>
-            <label class="form-label">Title: </label>
+            <legend>Create New Item</legend>
+            <label class="form-label">Name: </label>
             <input 
                 type="text" 
-                name="title" 
-                placeholder="{{ example.title }}"
-                value="{{ example.title }}"
+                name="name" 
+                placeholder="enter item's name"
                 class="form-control"
+                required
+                value="{{item.name}}"
             >
-            <label class="form-label">Body:</label>
+            <label class="form-label">Type: </label>
+            <select name="category" class="form-control">
+                <option value="Gear"
+                    {% if item.category == 'Gear' %}
+                        selected
+                    {% endif %}
+                >Gear</option>
+                <option value="Weapon"
+                    {% if item.category == 'Weapon' %}
+                        selected
+                    {% endif %}>Weapon</option>
+                <option value="Armor"
+                    {% if item.category == 'Armor' %}
+                        selected
+                    {% endif %}>Armor</option>
+                <option value="Magic Item"
+                    {% if item.category == 'Magic Item' %}
+                        selected
+                    {% endif %}
+                >Magic Item</option>
+                
+            </select>
+            <label class="form-label">Cost:</label>
             <input 
                 type="text" 
-                name="body" 
-                placeholder="{{ example.body }}" 
-                value="{{ example.body }}" 
+                name="cost" 
+                placeholder="examples: '10gp', '1cp', 'Mark's First Born Child', etc." 
                 class="form-control"
+                value="{{item.cost}}"
             >
-            <label class="form-label">Amount:</label>
+            <label class="form-label">weight:</label>
             <input 
-                type="number" 
-                name="amount"
-                value="{{ example.amount }}"
+                type="text" 
+                name="amount" 
                 class="form-control"
+                value="{{item.weight}}"
             >
-            <label class="form-label">Ready:</label>
-            <input 
-                type="checkbox" 
-                name="ready" 
-                class="form-check-input"
-                {% if example.ready %}
-                    checked
-                {% endif %}
-            >
+            <label class="form-label">Description:</label>
+            <textarea 
+                type="text" 
+                name="desc" 
+                class="form-control"
+                rows="4"
+                placeholder="Enter description here...
+(tip: if you need to add line breaks, type '&#60;br /&#62;')"
+            >{{item.desc}}</textarea>
+
+            
         </fieldset>
         <input type="submit" value="Edit Example" class="btn btn-success">
     </form>
