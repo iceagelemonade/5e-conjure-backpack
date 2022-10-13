@@ -5,6 +5,11 @@
     <h2 class="display-6">{{currentCampaignName}}</h2>
     <h2 class="display-6">{{currentBackpackName}}</h2>
     <hr>
+    {% if isMaster %}
+        <a href="/items/new" class="btn btn-success">
+            Create new item
+        </a>
+    {% endif %}
     <h2 class="display-8">All Items:</h2>
     <form action="../../../items/search/" method="GET">
         <fieldset class="input-group mb-3">

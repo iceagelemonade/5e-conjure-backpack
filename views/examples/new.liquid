@@ -1,37 +1,51 @@
 {% layout 'layout.liquid' %}
 {% block content %}
 <div class="container-sm">
-    <form action="/examples" method="POST">
+    <form action="/items" method="POST">
         <fieldset>
-            <legend>Create New Example</legend>
-            <label class="form-label">Title: </label>
+            <legend>Create New Item</legend>
+            <label class="form-label">Name: </label>
             <input 
                 type="text" 
-                name="title" 
-                placeholder="enter example title"
+                name="name" 
+                placeholder="enter item's name"
                 class="form-control"
+                required
             >
-            <label class="form-label">Body:</label>
+            <label class="form-label">Type: </label>
+            <select name="category" class="form-control">
+                <option value="Gear">Gear</option>
+                <option value="Weapon">Weapon</option>
+                <option value="Armor">Armor</option>
+                <option value="Magic Item">Magic Item</option>
+                
+            </select>
+            <label class="form-label">Cost:</label>
             <input 
                 type="text" 
-                name="body" 
-                placeholder="enter example body" 
+                name="cost" 
+                placeholder="examples: '10gp', '1cp', 'Mark's First Born Child', etc." 
                 class="form-control"
             >
-            <label class="form-label">Amount:</label>
+            <label class="form-label">weight:</label>
             <input 
-                type="number" 
+                type="text" 
                 name="amount" 
                 class="form-control"
             >
-            <label class="form-label">Ready:</label>
-            <input 
-                type="checkbox" 
-                name="ready" 
-                class="form-check-input"
-            >
+            <label class="form-label">Description:</label>
+            <textarea 
+                type="text" 
+                name="desc" 
+                class="form-control"
+                rows="4"
+                placeholder="Enter description here...
+(tip: if you need to add line breaks, type '&#60;br /&#62;')"
+            ></textarea>
+
+            
         </fieldset>
-        <input type="submit" value="Create New Example" class="btn btn-success">
+        <input type="submit" value="Create New Item" class="btn btn-success">
     </form>
 </div>
 {% endblock %}

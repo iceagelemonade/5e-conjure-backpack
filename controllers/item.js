@@ -83,19 +83,18 @@ router.get('/mine', (req, res) => {
 
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
-	const { username, userId, loggedIn } = req.session
-	res.render('examples/new', { username, loggedIn })
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	res.render('examples/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 })
 
 // create -> POST route that actually calls the db and makes a new document
 router.post('/', (req, res) => {
-	req.body.ready = req.body.ready === 'on' ? true : false
-
 	req.body.owner = req.session.userId
+	req.body.inCampaign = req.session.currentCampaignId
+
 	Item.create(req.body)
-		.then(example => {
-			console.log('this was returned from create', example)
-			res.redirect('/examples')
+		.then(item => {
+			res.redirect('/items')
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
