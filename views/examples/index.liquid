@@ -1,13 +1,15 @@
 {% layout 'layout.liquid'%}
 {% block content %}
 <div>
-    <h4>{{currentCampaign}}</h4>
     {% assign items_sorted = examples | sort: "name"%}
-    <h2 class="display-6">All Examples</h2>
-    <form action="items/search/" method="GET">
+    <h2 class="display-6">{{currentCampaignName}}</h2>
+    <h2 class="display-6">{{currentBackpackName}}</h2>
+    <hr>
+    <h2 class="display-8">All Items:</h2>
+    <form action="../../../items/search/" method="GET">
         <fieldset class="input-group mb-3">
             {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
-            <input class="form-control" list="datalistOptions" id="exampleDataList" name ="name" placeholder="Type to search...">
+            <input class="form-control" list="datalistOptions" id="dataList" name ="name" placeholder="Type to search items..." autocomplete="off">
             <input type="submit" value="Search" class="btn btn-primary">
                 
             <datalist id="datalistOptions">
@@ -16,33 +18,55 @@
                 {% endfor %}
             </datalist>
             
-        </fieldset>
-</form>  
+            </fieldset>
+    </form>  
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="../../../items/">All</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../../items/filter/Gear">Gear</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../../items/filter/Weapon">Weapons</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="../../../items/filter/Armor">Armor</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="../../../items/filter/Magic%20Item">Magic Items</a>
+        </li>
+          {% if isMaster %}
+            <li class="nav-item">
+                <a class="nav-link active" href="/items/mine/">Created by {{username}}</a>
+            </li>
+        {% endif %}
 
-
-    <div class="row">
-
-
-
-        
-
-
+    </ul>
+    {% if items_sorted.length < 1%}
+        <h2 class="display-6">{{username}} opened the manifest, but there was nothing there.</h2>
+    {% endif %}
+    <div class="row">     
         {% for example in items_sorted %}
         <div class="card" style="width: 18rem;">
             <h5 class="card-header">{{ example.name }}</h5>
             <div class="card-body">
                 <h5 class="card-title">
-                    Ready?: {{ example.ready }}
+                Type: {{ example.category }}
                 </h5>
-                <p class="card-text text-truncate" style="height: 20vh">>
-                    Desc: 
-                    {% for line in example.desc%}
-                        {{line}}<br />
-                    {% endfor %}
-                </p>
+                {% comment %} <p class="card-text" style="height: 20vh; overflow:auto;"> 
+                    {{example.desc}}
+                </p> {% endcomment %}
                 <p class="card-text">
-                    weight: {{ example.weight }}
+                {% if example.weight%}
+                    weight: {{ example.weight }}<br />
+                {% endif %}
+                {% if example.cost%}
+                    cost: {{ example.cost }}
+                {% endif %}
                 </p>
+            </div>
+            <div class="card-footer">
                 <a href="/items/{{ example.id }}" class="btn btn-info">
                     View {{ example.title }}
                 </a>

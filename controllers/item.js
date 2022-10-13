@@ -26,11 +26,26 @@ router.use((req, res, next) => {
 
 // index ALL
 router.get('/', (req, res) => {
-	Item.find({})
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	Item.find({inCampaign: currentCampaignId})
 		.then(examples => {
 			
-			const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackIdn })
+			
+			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
+router.get('/filter/:type', (req, res) => {
+	const type = req.params.type
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	Item.find({inCampaign: currentCampaignId, category: type})
+		.then(examples => {
+			
+			
+			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -40,13 +55,12 @@ router.get('/', (req, res) => {
 
 router.get('/search/', (req, res) => {
 	const term = req.query.name
-	console.log(term)
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Item.find({ name: term })
 		.then(examples => {
-			const username = req.session.username
-			const loggedIn = req.session.loggedIn
+
 			
-			res.render('examples/show', { examples, username, loggedIn })
+			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -57,10 +71,10 @@ router.get('/search/', (req, res) => {
 // index that shows only the user's examples
 router.get('/mine', (req, res) => {
     // destructure user info from req.session
-    const { username, userId, loggedIn } = req.session
-	Item.find({ owner: userId })
+    const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	Item.find({ owner: userId, inCampaign: currentCampaignId })
 		.then(examples => {
-			res.render('examples/index', { examples, username, loggedIn })
+			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)

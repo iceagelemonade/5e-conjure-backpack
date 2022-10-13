@@ -35,19 +35,24 @@ const getCategory = (str) => {
 const getDesc = (obj) => {
     let desc = ''
     if (obj.name == "Net") {
-        desc = obj.special[1]
+        desc = obj.special[0]
     } else {
     
         switch (obj.equipment_category.index) {
             case 'weapon':
                 let properties = '' 
-                obj.properties.forEach((property) => {
-                    properties = properties + property.name + ','
+                obj.properties.forEach((property, ind) => {
+                    let trail = ', '
+                    if (ind + 1 == obj.properties.length) {
+                        trail = ''
+                    }
+                    properties = properties + property.name + trail
                     })
-                desc = `Type: ${obj.category_range} \n Damage: ${obj.damage.damage_dice} ${obj.damage.damage_type.name} \n Range: ${obj.range.normal}/${obj.range.long} \n Properties: ${properties}`
+                let range = `${obj.range.normal} ${obj.range.long?'/ '+obj.range.long:''}`
+                desc = `Type: ${obj.category_range} <br /> Damage: ${obj.damage.damage_dice}${obj.two_handed_damage?'/ '+obj.two_handed_damage.damage_dice:''} ${obj.damage.damage_type.name} <br /> Range: ${range} <br /> Properties: ${properties}`
                 break;
             case 'armor':
-                desc = `${obj.armor_category} Armor \n Armor Class: ${obj.armor_class.base}`
+                desc = `${obj.armor_category} Armor <br /> Armor Class: ${obj.armor_class.base}`
                 break;
             default:
                 let description = '' 
@@ -63,7 +68,7 @@ const getDesc = (obj) => {
 const getDescMagic = (arr) => {
     let description = '' 
             arr.forEach((line) => {
-                description = description + line + '\n'
+                description = description + line + '<br />'
                 })
     return description
 }
@@ -74,7 +79,7 @@ let timer = setTimeout(() => {
     db.close()
 }, 45000)
 
-
+let loaded = 0
 
 db.on('open', () => {
     let list = []
@@ -118,6 +123,7 @@ db.on('open', () => {
                 // console.log(count)
                 if (count === url.length) {
                     console.log('Basic items imported')
+                    loaded++
                 }
             })
             .catch(err => {
@@ -174,8 +180,7 @@ db.on('open', () => {
                 // console.log(count)
                 if (count === url.length) {
                     console.log('Magic items imported')
-                    clearTimeout(timer)
-                    setTimeout(()=>{db.close()}, 1000)
+                    loaded++
                 }
             })
             .catch(err => {
@@ -190,3 +195,11 @@ db.on('open', () => {
     })
 
 })
+
+let checkTimer = setInterval(() => {
+    if(loaded === 2) {
+        clearTimeout(timer)
+        db.close()
+        clearInterval(checkTimer)
+    }
+}, 500)
