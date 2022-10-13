@@ -11,8 +11,14 @@ const itemSchema = new Schema(
 	{
 
 		name: String,
-		desc: [],
+		category: {
+			type: String,
+			required: true,
+			enum: ['Weapon', 'Armor', 'Magic Item', 'Gear']
+		},
+		desc: String,
 		weight: String,
+		cost: String,
 		owner: {
 			type: Schema.Types.ObjectID,
 			ref: 'User',

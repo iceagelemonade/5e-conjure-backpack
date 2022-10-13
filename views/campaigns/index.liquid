@@ -9,7 +9,11 @@
                 <div class="card" style="width: 18rem;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
-                        <p>{{ campaign.description }}</p>
+                        <p>
+                            {% for player in campaign.players%}
+                                &nbsp;{{player}},
+                            {% endfor %} 
+                        </p>
                         
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
                             <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-info">
@@ -27,11 +31,15 @@
     <hr>
     <div class="row">
         {% for campaign in campaigns%}
-            {% if campaign.players contains userId %}
+            {% if campaign.players contains username %}
                 <div class="card" style="width: 18rem;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
-                        <p>{{ campaign.description }}</p>
+                        <p>
+                            {% for player in campaign.players%}
+                                &nbsp;{{player}},
+                            {% endfor %} 
+                        </p>
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
                             <input class="btn btn-info" type="submit" value="Enter">
                         </form>

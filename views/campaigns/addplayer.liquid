@@ -1,0 +1,20 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<div class="container-sm">
+    <form action="/campaigns/addplayer/{{currentCampaignId}}?_method=PUT" method="POST">
+        <fieldset>
+            <legend>Add player to {{currentCampaignName}}</legend>
+            <label class="form-label">Player's Username: </label>
+            <input 
+                type="text" 
+                name="name"
+                required
+                placeholder="enter player's username..."
+                class="form-control"
+                
+            >            
+        </fieldset>
+        <input type="submit" value="Add Player" class="btn btn-success">
+    </form>
+</div>
+{% endblock %}

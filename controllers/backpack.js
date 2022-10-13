@@ -176,12 +176,12 @@ router.put('/:backpackId/:itemId', (req, res) => {
 				if ( backpack.items[i] == itemId) {
 					backpack.items.splice(i,1)
 					console.log('new arr ', backpack.items)
-					i = backpack.items.length
-					backpack.save()
+					i--
+					
 				}
 			}
 			
-		
+			backpack.save()
 			res.redirect(`/backpacks/${backpackId}`)
 		})
 		.catch((error) => {

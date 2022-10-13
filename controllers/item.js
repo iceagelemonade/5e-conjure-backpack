@@ -121,6 +121,7 @@ router.get('/:id', (req, res) => {
 	Item.findById(exampleId)
 		.then(example => {
             const {username, loggedIn, userId} = req.session
+			
 			res.render('examples/show', { example, username, loggedIn, userId })
 		})
 		.catch((error) => {

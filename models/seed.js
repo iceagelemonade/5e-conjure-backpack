@@ -17,6 +17,56 @@ const axios = require('axios').default
 ///////////////////////////////////////
 // first we need our connection saved to a variable for easy refrence
 const db = mongoose.connection
+const getCategory = (str) => {
+    let value = ''
+    switch (str) {
+        case 'armor':
+            value = 'Armor'
+            break;
+        case 'weapon':
+            value = 'Weapon'
+            break;
+        default:
+            value = 'Gear'
+    }
+    return value
+}
+
+const getDesc = (obj) => {
+    let desc = ''
+    if (obj.name == "Net") {
+        desc = obj.special[1]
+    } else {
+    
+        switch (obj.equipment_category.index) {
+            case 'weapon':
+                let properties = '' 
+                obj.properties.forEach((property) => {
+                    properties = properties + property.name + ','
+                    })
+                desc = `Type: ${obj.category_range} \n Damage: ${obj.damage.damage_dice} ${obj.damage.damage_type.name} \n Range: ${obj.range.normal}/${obj.range.long} \n Properties: ${properties}`
+                break;
+            case 'armor':
+                desc = `${obj.armor_category} Armor \n Armor Class: ${obj.armor_class.base}`
+                break;
+            default:
+                let description = '' 
+                obj.desc.forEach((line) => {
+                    description = description + line + '\n'
+                    })
+                desc = description
+        }
+    }
+    return desc
+}
+
+const getDescMagic = (arr) => {
+    let description = '' 
+            arr.forEach((line) => {
+                description = description + line + '\n'
+                })
+    return description
+}
 
 
 let timer = setTimeout(() => {
@@ -53,8 +103,10 @@ db.on('open', () => {
                 const obj = {}
                 const data = response.data
                 obj.name = data.name
-                obj.desc = data.desc
+                obj.category = getCategory(data.equipment_category.index)
+                obj.desc = getDesc(data)
                 obj.weight = data.weight
+                obj.cost=data.cost?data.cost.quantity+data.cost.unit:null
                 obj.owner = null
                 obj.fromSeed = true
                 // console.log(obj)
@@ -108,7 +160,8 @@ db.on('open', () => {
                 const obj = {}
                 const data = response.data
                 obj.name = data.name
-                obj.desc = data.desc
+                obj.category= 'Magic Item'
+                obj.desc = getDescMagic(data.desc)
                 obj.weight = data.weight
                 obj.owner = null
                 obj.fromSeed = true

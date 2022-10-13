@@ -64,6 +64,26 @@ router.post('/', (req, res) => {
 		})
 })
 
+// get route for adding player to campaign
+router.get('/addplayer', (req, res) => {
+	req.session.currentBackpackId =''
+	req.session.currentBackpackName = ''
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	res.render('campaigns/addplayer', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
+})
+// put route for adding players
+router.put('/addplayer/:id', (req, res) => {
+	const id = req.params.id
+	console.log('an id: ',id)
+	Campaign.findById(id)
+		.then(campaign => {
+			campaign.players.push(req.body.name)
+			campaign.save()
+			res.redirect('/backpacks')
+		})
+})
+	
+
 // put route for adding SRD(seeded) items to campaign
 router.put('/import/:id', (req, res) => {
 	const campaignId = req.params.id

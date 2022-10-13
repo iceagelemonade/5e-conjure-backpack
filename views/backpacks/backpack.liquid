@@ -1,5 +1,8 @@
 {% layout 'layout.liquid'%}
 {% block content %}
+
+
+
 <div>
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <h4 class="display-6">{{currentBackpackName}}</h4>
@@ -43,17 +46,16 @@
                             Ready?: {{ example.ready }}
                         </h5>
                         <p class="card-text text-truncate" style="height: 20vh">>
-                            Desc: 
-                            {% for line in example.desc%}
-                                {{line}}<br />
-                            {% endfor %}
+                            Desc: {{example.desc}}
+                            
                         </p>
                         <p class="card-text">
                             weight: {{ example.weight }}
                         </p>
                         <form action="{{currentBackpackId}}/{{example.id}}?_method=PUT" method="POST">
                             <input type="submit" value="Remove" class="btn btn-danger">
-                            <a href="items/{{ example.id }}" class="btn btn-info">
+                            
+                            <a href="../items/{{ example.id }}" class="btn btn-info">
                                 View {{ example.title }}
                             </a>
                         
