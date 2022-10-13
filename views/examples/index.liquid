@@ -71,7 +71,7 @@
             <div class="card-footer">
                 <div class="btn-group" style="width:100%">
                     {% if isMaster and currentBackpackId == ""%}
-                        <form action="/campaigns/remove{{ example.id }}?_method=PUT" method="POST">
+                        <form action="/items/remove/{{currentCampaignId}}/{{ example.id }}?_method=PUT" method="POST">
                             <input type="submit" value="Remove from {{currentCampaignName}}" class="btn btn-danger">
                         </form>
                     {% else %}

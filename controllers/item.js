@@ -68,6 +68,27 @@ router.get('/search/', (req, res) => {
 })
 
 
+// put route for removing items from a campaign
+router.put('/remove/:campaignId/:itemId', (req, res) => {
+	const campaignId = req.params.campaignId
+	const itemId = req.params.itemId
+
+	Item.findById(itemId)
+		.then(item => {
+			for ( let i = 0; i < item.inCampaign.length; i++){
+				if ( item.inCampaign[i] == campaignId) {
+					item.inCampaign.splice(i,1)
+					i--
+				}
+			}
+			item.save()
+			res.redirect(`/items`)
+		})
+		.catch((error) => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
 // index that shows only the user's examples
 router.get('/mine', (req, res) => {
     // destructure user info from req.session

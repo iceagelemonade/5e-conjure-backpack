@@ -55,7 +55,7 @@ router.put('/add/:id', (req, res) => {
 		.then(backpack => {
 			backpack.items.push(itemId)
 			backpack.save()
-			res.redirect(`/items/`)
+			res.redirect(`/backpacks/${backpackId}`)
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -165,8 +165,8 @@ router.get('/:id', (req, res) => {
 		.then(backpack => {
             req.session.currentBackpackId = backpack.id
 			req.session.currentBackpackName = backpack.name
-		
-			Item.find({ _id: { $in: backpack.items}})
+			
+			Item.find({ _id: { $in: backpack.items}, inCampaign: req.session.currentCampaignId })
 				.then(items => {
 				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session					
 				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
