@@ -27,7 +27,7 @@
                 placeholder="examples: '10gp', '1cp', 'Mark's First Born Child', etc." 
                 class="form-control"
             >
-            <label class="form-label">weight:</label>
+            <label class="form-label">Weight:</label>
             <input 
                 type="text" 
                 name="amount" 
@@ -42,8 +42,18 @@
                 placeholder="Enter description here...
 (tip: if you need to add line breaks, type '&#60;br /&#62;')"
             ></textarea>
-
             
+            <input class="form-check-input" type="checkbox" name="isSecret" checked>
+            <label class="form-label">Secrets hidden from players</label>
+            <textarea 
+                type="text" 
+                name="secrets" 
+                class="form-control"
+                rows="4"
+                placeholder="Enter anything you want hidden from players here...
+So long as the above box is checked, on DM's will be able to see this.
+(tip: if you need to add line breaks, type '&#60;br /&#62;')"
+            ></textarea>
         </fieldset>
         <input type="submit" value="Create New Item" class="btn btn-success">
     </form>

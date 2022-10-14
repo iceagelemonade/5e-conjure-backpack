@@ -17,7 +17,11 @@
         <h3>{{ example.category }}</h3>
 
         <h5>{{ example.desc }}</h5>
-        
+        {% if isMaster or example.secrets and example.isSecret == false %}
+            <hr>
+            <h3>Secrets:</h3>
+            <h5>{{example.secrets}}</h5>
+        {% endif %}
         {% if example.owner == userId and example.owner != null %}
         <div class="btn-group">
             <a href="/items/{{ example.id }}/edit" class="btn btn-primary">Edit</a>

@@ -112,6 +112,7 @@ router.get('/new', (req, res) => {
 router.post('/', (req, res) => {
 	req.body.owner = req.session.userId
 	req.body.inCampaign = req.session.currentCampaignId
+	req.body.isSecret = req.body.isSecret === 'on'?true:false
 
 	Item.create(req.body)
 		.then(item => {
@@ -128,6 +129,7 @@ router.get('/:id/edit', (req, res) => {
 	const itemId = req.params.id
 	Item.findById(itemId)
 		.then(item => {
+			
 			res.render('examples/edit', { item })
 		})
 		.catch((error) => {
@@ -138,7 +140,7 @@ router.get('/:id/edit', (req, res) => {
 // update route
 router.put('/:id', (req, res) => {
 	const exampleId = req.params.id
-	
+	req.body.isSecret = req.body.isSecret === 'on'?true:false
 
 	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
 		.then(example => {

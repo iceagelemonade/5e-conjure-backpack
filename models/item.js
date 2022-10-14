@@ -29,6 +29,9 @@ const itemSchema = new Schema(
 			required : true,
 			default : false
 		},
+		isSecret: Boolean,
+		secrets: String,
+
 	},
 	{ timestamps: true }
 )
