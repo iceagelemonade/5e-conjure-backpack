@@ -5,7 +5,7 @@
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <hr>
     {% if isMaster == false %}
-        <a href="./new" class = "btn btn-success">Add Backpack</a>
+        <a href="../backpacks/new" class = "btn btn-success">Add Backpack</a>
     {% endif %}
     {% if isMaster == true %}
         <div class="btn-group">
@@ -20,12 +20,20 @@
         {% for backpack in backpacks%}
             {% if  backpack.campaign == currentCampaignId and backpack.owner == userId or isMaster == true%}
                 <div class="card" style="width: 18rem;">
-                    <h5 class="card-header">{{ backpack.name }}</h5>
-                    <div class="card-body">
-                        <a href="/backpacks/{{ backpack.id }}" class="btn btn-info">
+                    <h5 class="card-body">
+                        {{ backpack.name }}
+                        {% if backpack.owner == userId %}
+                            <span>
+                                <a class="btn btn-small btn-danger float-end" href="/backpacks/delete/{{backpack.id}}">
+                                    X
+                                </a>
+                            </span>
+                        {% endif %}
+                    </h5>
+                    <div class="card-footer">
+                        <a href="/backpacks/{{ backpack.id }}" class="btn btn-info" style="width: 100%;">
                             Open
-                        </a>
-                        
+                        </a>   
                     </div>
                 </div>                
             {% endif %}

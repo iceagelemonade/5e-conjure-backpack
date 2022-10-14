@@ -17,19 +17,23 @@
         <h3>{{ example.category }}</h3>
 
         <h5>{{ example.desc }}</h5>
-        {% if isMaster or example.secrets and example.isSecret == false %}
-            <hr>
-            <h3>Secrets:</h3>
-            <h5>{{example.secrets}}</h5>
+        <hr>
+        {% if isMaster and example.secrets or example.secrets and example.isSecret == false %}
+            {% if example.secrets != "" %}
+                <h3>Secrets:</h3>
+                <h5>{{example.secrets}}</h5>
+                <hr>
+            {% endif %}
         {% endif %}
         {% if example.owner == userId and example.owner != null %}
-        <div class="btn-group">
-            <a href="/items/{{ example.id }}/edit" class="btn btn-primary">Edit</a>
-            <form action="/items/{{ example.id }}?_method=DELETE" method="POST">
-                <input type="submit" value="Delete" class="btn btn-danger">
-            </form>
-        </div>
-        <hr>
+            
+            <div class="btn-group mb-3">
+                <a href="/items/{{ example.id }}/edit" class="btn btn-primary">Edit</a>
+                <form action="/items/{{ example.id }}?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </div>
+            <br />
         {% endif %}
         <div class="btn-group">
             {% if currentBackpackId != "" %}

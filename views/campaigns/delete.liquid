@@ -1,0 +1,15 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<div class ="container-sm">
+    <h2>Are you sure you want to delete {{campaignName}} and destroy all backpacks within?</h2>
+    <h4><i>(This action cannot be undone.)</i></h4>
+    <hr>
+    <form action="?_method=DELETE" method="POST">
+        <div class="btn-group">
+            <a class ="btn btn-secondary" href="/campaigns">Cancel</a>
+            <input type="submit" value="Delete Campaign" class="btn btn-danger">
+        </div>
+    </form>
+    
+</div>
+{% endblock %}

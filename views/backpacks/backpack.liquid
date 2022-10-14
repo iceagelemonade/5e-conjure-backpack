@@ -3,7 +3,7 @@
 
 
 
-<div>
+<div class="m-3">
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <h4 class="display-6">{{currentBackpackName}}</h4>
     <a class="btn btn-success" href="../../items/">Add Items to Backpack</a>
@@ -53,9 +53,9 @@
     {% endif %}
     <div class="row">     
             {% for example in items_sorted %}
-                <div class="card m-1 mt-0 {{example.category}} " style="width: 18rem;">
+                <div class="card m-1 mt-0" style="width: 18rem;">
                     <a name="{{example.id}}"></a>
-                    <div class ="card-header">   
+                    <div class ="card-header {{example.category}} ">   
                         <h6>
                             <span>
                                 {% if isMaster and example.owner != userId %}
@@ -64,17 +64,18 @@
                                     </form>
                                 {% endif %}
                             </span>
-                            <span class="badge bg-success">
-                            {% if example.fromSeed%}
-                                SRD
-                            {% else%}
-                                Homebrew
+                            {% if isMaster %}
+                                <span class="badge bg-success">
+                                    {% if example.fromSeed%}
+                                        SRD
+                                    {% else%}
+                                        Homebrew
+                                    {% endif %}
+                                </span>
+                                {% if example.owner == userId%}
+                                    <span class="badge bg-primary">Owner</span>
+                                {% endif %}
                             {% endif %}
-                            </span>
-                            {% if example.owner == userId%}
-                            <span class="badge bg-primary">Owner</span>
-                            {% endif %}
-
                         
                     </h6>
                         <h5>{{ example.name }}</h5>

@@ -113,22 +113,30 @@ router.get('/new', (req, res) => {
 	res.render('examples/new', { username, loggedIn })
 })
 
-// // create -> POST route that actually calls the db and makes a new document
-// router.post('/', (req, res) => {
-// 	req.body.ready = req.body.ready === 'on' ? true : false
+// show route for deleting backpack
+router.get('/delete/:id', (req, res) => {
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	const backpackId = req.params.id
+	Backpack.findById(backpackId)
+		.then(backpack => {
+			res.render('backpacks/delete', { backpack, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+		})
+		.catch((error) => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
 
-// 	req.body.owner = req.session.userId
-// 	Item.create(req.body)
-// 		.then(example => {
-// 			console.log('this was returned from create', example)
-// 			res.redirect('/examples')
-// 		})
-// 		.catch(error => {
-// 			res.redirect(`/error?error=${error}`)
-// 		})
-// })
-
-// get route for filter type of items to display in current backpack
+// delete route
+router.delete('/delete/:id', (req, res) => {
+	const backpackId = req.params.id
+	Backpack.findByIdAndRemove(backpackId)
+		.then(backpack => {
+			res.redirect('/backpacks')
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
 router.get('/:id/filter/:type', (req, res) => {
 	const backpackId = req.params.id
 	let type= req.params.type

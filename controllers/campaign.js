@@ -2,6 +2,7 @@
 const express = require('express')
 const Example = require('../models/example')
 const Campaign = require('../models/campaign')
+const Backpack = require('../models/backpack')
 const User = require('../models/user')
 const Item = require('../models/item')
 const axios = require('axios').default
@@ -128,6 +129,7 @@ router.put('/removeplayer/:id', (req, res) => {
 
 // get route to go back to selection for new or existing campaign
 router.get('/select', (req, res) => {
+	req.session.isMaster = false
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	res.render('auth/select', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
 })
@@ -202,13 +204,13 @@ router.put('/:id', (req, res) => {
 		})
 })
 
-// show route
-router.get('/:id', (req, res) => {
-	const exampleId = req.params.id
-	Campaign.findById(exampleId)
+// show route for deleting campaign
+router.get('/delete/:id', (req, res) => {
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	const campaignId = req.params.id
+	Campaign.findById(campaignId)
 		.then(campaign => {
-            const {username, loggedIn, userId} = req.session
-			res.render('campaigns/show', { campaign, username, loggedIn, userId })
+			res.render('campaigns/delete', { campaign, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -216,11 +218,27 @@ router.get('/:id', (req, res) => {
 })
 
 // delete route
-router.delete('/:id', (req, res) => {
-	const exampleId = req.params.id
-	Campaign.findByIdAndRemove(exampleId)
-		.then(campaign => {
-			res.redirect('/campaigns')
+router.delete('/delete/:id', (req, res) => {
+	const campaignId = req.params.id
+	Backpack.find({campaign: campaignId})
+		.then(backpacks => {
+			backpacks.forEach(backpack => {
+				console.log(backpack.id)
+				Backpack.findByIdAndRemove(backpack.id)
+					.then()
+					.catch(error => {
+						res.redirect(`/error?error=${error}`)
+						})
+			})
+		})
+		.then(drop =>{
+			Campaign.findByIdAndRemove(campaignId)
+				.then(campaign => {
+				res.redirect('/campaigns')
+				})
+				.catch(error => {
+				res.redirect(`/error?error=${error}`)
+				})
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
