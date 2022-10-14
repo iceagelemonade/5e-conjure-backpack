@@ -1,6 +1,5 @@
 // Import Dependencies
 const express = require('express')
-const Example = require('../models/example')
 const Item = require('../models/item')
 const axios = require('axios').default
 

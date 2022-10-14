@@ -1,6 +1,5 @@
 // Import Dependencies
 const express = require('express')
-const Example = require('../models/example')
 const Campaign = require('../models/campaign')
 const Backpack = require('../models/backpack')
 const User = require('../models/user')
@@ -35,6 +34,7 @@ router.get('/', (req, res) => {
 			req.session.currentCampaignId = ''
 			req.session.currentBackpackName = ''
 			req.session.currentBackpackId = ''
+			req.session.isMaster = false
 			const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 			res.render('campaigns/index', { campaigns, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
@@ -129,6 +129,10 @@ router.put('/removeplayer/:id', (req, res) => {
 
 // get route to go back to selection for new or existing campaign
 router.get('/select', (req, res) => {
+	req.session.currentCampaignName = ''
+	req.session.currentCampaignId = ''
+	req.session.currentBackpackName = ''
+	req.session.currentBackpackId = ''
 	req.session.isMaster = false
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	res.render('auth/select', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )

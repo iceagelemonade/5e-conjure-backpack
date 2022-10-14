@@ -1,7 +1,7 @@
 // Import Dependencies
 const express = require('express')
-const Example = require('../models/example')
 const Backpack = require('../models/backpack')
+const Campaign = require('../models/campaign')
 const Item = require('../models/item')
 const axios = require('axios').default
 
@@ -44,7 +44,17 @@ router.get('/', (req, res) => {
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-	res.render('backpacks/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+	Campaign.findById(currentCampaignId)
+		.then(campaign => {
+			if (campaign.players.includes(username)) {
+			res.render('backpacks/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+			} else {
+				res.redirect(`/error?error=You%20are%20not%20a%20player%20in%20this%20campaign`)
+			}
+		})
+		.catch((error) => {
+			res.redirect(`/error?error=You%20are%20not%20a%20player%20in%20this%20campaign`)
+		})
 })
 
 // put route for adding to backpack
@@ -92,20 +102,6 @@ router.get('/search/', (req, res) => {
 				res.redirect(`/error?error=${error}`)
 			})	
 })
-
-
-// // index that shows only the user's examples
-// router.get('/mine', (req, res) => {
-//     // destructure user info from req.session
-//     const { username, userId, loggedIn } = req.session
-// 	Item.find({ owner: userId })
-// 		.then(examples => {
-// 			res.render('examples/index', { examples, username, loggedIn })
-// 		})
-// 		.catch(error => {
-// 			res.redirect(`/error?error=${error}`)
-// 		})
-// })
 
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
@@ -177,19 +173,19 @@ router.get('/:id/edit', (req, res) => {
 		})
 })
 
-// update route
-router.put('/:id', (req, res) => {
-	const exampleId = req.params.id
-	req.body.ready = req.body.ready === 'on' ? true : false
+// // update route
+// router.put('/:id', (req, res) => {
+// 	const exampleId = req.params.id
+// 	req.body.ready = req.body.ready === 'on' ? true : false
 
-	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
-		.then(example => {
-			res.redirect(`/examples/${example.id}`)
-		})
-		.catch((error) => {
-			res.redirect(`/error?error=${error}`)
-		})
-})
+// 	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
+// 		.then(example => {
+// 			res.redirect(`/examples/${example.id}`)
+// 		})
+// 		.catch((error) => {
+// 			res.redirect(`/error?error=${error}`)
+// 		})
+// })
 
 // show route
 // Here we want to display items in a players pack. since the backpack only knows the id of a given item we will use the $in operator after finding the backpack by the sent id
@@ -256,22 +252,6 @@ router.delete('/:id', (req, res) => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
-
-
-
-
-// 	Example.find({})
-// 		.then(examples => {
-// 			const username = req.session.username
-// 			const loggedIn = req.session.loggedIn
-			
-// 			res.render('examples/index', { examples, username, loggedIn })
-// 		})
-// 		.catch(error => {
-// 			res.redirect(`/error?error=${error}`)
-// 		})
-// })
-
 
 // Export the Router
 module.exports = router
