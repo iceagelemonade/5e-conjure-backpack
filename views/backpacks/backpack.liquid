@@ -11,7 +11,7 @@
     {% assign items_sorted = items | sort: "name"%}
     {% comment %} <h2 class="display-6">All Examples</h2> {% endcomment %}
     <h2 class="display-8">All Items:</h2>
-    <form action="../../../items/search/" method="GET">
+    <form action="../../../backpacks/search/" method="GET">
         <fieldset class="input-group mb-3">
             {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
             <input class="form-control" list="datalistOptions" id="dataList" name ="name" placeholder="Type to search items..." autocomplete="off">
