@@ -6,7 +6,7 @@
 <div>
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <h4 class="display-6">{{currentBackpackName}}</h4>
-    <a class="btn btn-success" href="../items/">Add Items to Backpack</a>
+    <a class="btn btn-success" href="../../items/">Add Items to Backpack</a>
     <hr>
     {% assign items_sorted = items | sort: "name"%}
     {% comment %} <h2 class="display-6">All Examples</h2> {% endcomment %}
@@ -52,38 +52,61 @@
         <h2 class="display-6">You opened {{currentBackpackName}}, but all that came out was a moth and a puff of dust...</h2>
     {% endif %}
     <div class="row">     
-        {% for example in items_sorted %}
-        <div class="card" style="width: 18rem;">
-            <h5 class="card-header">{{ example.name }}</h5>
-            <div class="card-body">
-                <h5 class="card-title">
-                Type: {{ example.category }}
-                </h5>
-                <p class="card-text">
-                {% if example.weight%}
-                    weight: {{ example.weight }}<br />
-                {% endif %}
-                {% if example.cost%}
-                    cost: {{ example.cost }}
-                {% endif %}
-                </p>
-            </div>
-            <div class="card-footer">
-                <div class="btn-group" style="width:100%">
-                    <form action="{{currentBackpackId}}/{{example.id}}?_method=PUT" method="POST">
-                        <input type="submit" value="Remove" class="btn btn-danger">
-                    
-               
-                    <a href="/items/{{ example.id }}" class="btn btn-info">
-                        View {{ example.title }}
-                    </a>
+            {% for example in items_sorted %}
+                <div class="card m-1 mt-0 {{example.category}} " style="width: 18rem;">
+                    <a name="{{example.id}}"></a>
+                    <div class ="card-header">   
+                        <h6>
+                            <span>
+                                {% if isMaster and example.owner != userId %}
+                                    <form action="/items/remove/{{currentCampaignId}}/{{ example.id }}?_method=PUT" method="POST">
+                                        <input type="submit" value="X" class="btn btn-small btn-danger float-end">
+                                    </form>
+                                {% endif %}
+                            </span>
+                            <span class="badge bg-success">
+                            {% if example.fromSeed%}
+                                SRD
+                            {% else%}
+                                Homebrew
+                            {% endif %}
+                            </span>
+                            {% if example.owner == userId%}
+                            <span class="badge bg-primary">Owner</span>
+                            {% endif %}
+
+                        
+                    </h6>
+                        <h5>{{ example.name }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                        {{ example.category }}
+                        </h5>
+                        <p class="card-text text-end">
+                        {% if example.weight and example.weight != "" %}
+                            weight: {{ example.weight }}<br />
+                        {% endif %}
+                        {% if example.cost and example.cost != "" %}
+                            cost: {{ example.cost }}
+                        {% endif %}
+                        </p>
+                    </div>
+                    <div class="card-footer">
+                        
+                            <form action="{{currentBackpackId}}/{{example.id}}?_method=PUT" method="POST">
+                                <input type="submit" value="Remove" class="btn btn-danger" style="width:100%;">
+                            </form>     
+                        
+                        <div>
+                            <a href="/items/{{ example.id }}" class="btn btn-info" style="width:100%">
+                                View {{ example.title }}
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 {% endblock %}
 
-
-      

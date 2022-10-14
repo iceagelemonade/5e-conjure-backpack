@@ -3,7 +3,27 @@ body {
     background-repeat: repeat;
 }
 
-.card {
+/* .card {
     background-image: url('certificate_paper_texture_by_icycatelf_d4dy93c.jpg');
     background-size: cover;
+} */
+
+.Magic {
+    background-color: rgba(221, 160, 243, .35);
+    border-color: rgb(221, 160, 243);
+}
+
+.Gear {
+    background-color: rgba(160, 243, 188, .35);
+    border-color: rgb(160, 243, 188);
+}
+
+.Weapon {
+    background-color: rgba(160, 210, 243, .35);
+    border-color: rgb(160, 210, 243);
+}
+
+.Armor {
+    background-color: rgba(246, 137, 67, .35);
+    border-color: rgb(246, 137, 67);
 }

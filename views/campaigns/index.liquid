@@ -9,17 +9,24 @@
                 <div class="card" style="width: 18rem;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
-                        <p>
+                        <P>
+                            {{campaign.description}}
+                        </P>
+                        <ul class="list-group">
+                            Players:&nbsp;
                             {% for player in campaign.players%}
-                                |{{player}}|&nbsp;
+                                <li class="list-group-item">
+                                {{player}}&nbsp;
+                                </li>
                             {% endfor %} 
-                        </p>
-                        
+                        </ul>
+                    </div>
+                    <div class="card-footer">
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
-                            <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-info">
+                            <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-primary">
                                 Edit
                             </a>
-                            <input class="btn btn-info" type="submit" value="Enter">
+                            <input class="btn btn-success" type="submit" value="Enter">
                         </form>
                     </div>
                 </div>                
@@ -35,11 +42,19 @@
                 <div class="card" style="width: 18rem;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
                     <div class="card-body">
-                        <p>
+                        <P>
+                            {{campaign.description}}
+                        </P>
+                        <ul class="list-group">
+                            Players:&nbsp;
                             {% for player in campaign.players%}
-                                |{{player}}|&nbsp;
+                                <li class="list-group-item">
+                                {{player}}&nbsp;
+                                </li>
                             {% endfor %} 
-                        </p>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
                             <input class="btn btn-info" type="submit" value="Enter">
                         </form>

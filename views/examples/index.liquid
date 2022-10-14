@@ -1,6 +1,6 @@
 {% layout 'layout.liquid'%}
 {% block content %}
-<div>
+<div class="container-fluid m-2 pt-8">
     {% assign items_sorted = examples | sort: "name"%}
     <h2 class="display-6">{{currentCampaignName}}</h2>
     <h2 class="display-6">{{currentBackpackName}}</h2>
@@ -10,9 +10,9 @@
             Create new item
         </a>
     {% endif %}
-    <h2 class="display-8">All Items:</h2>
+    <h2 class="display-8">Item Library:</h2>
     <form action="../../../items/search/" method="GET">
-        <fieldset class="input-group mb-3">
+        <fieldset class="input-group mb-3" style="max-width:500px">
             {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
             <input class="form-control" list="datalistOptions" id="dataList" name ="name" placeholder="Type to search items..." autocomplete="off">
             <input type="submit" value="Search" class="btn btn-primary">
@@ -53,37 +53,55 @@
     {% endif %}
     <div class="row">     
         {% for example in items_sorted %}
-        <div class="card" style="width: 18rem;">
-            <h5 class="card-header">{{ example.name }}</h5>
-            <div class="card-body">
-                <h5 class="card-title">
-                Type: {{ example.category }}
-                </h5>
-                <p class="card-text">
-                {% if example.weight%}
-                    weight: {{ example.weight }}<br />
-                {% endif %}
-                {% if example.cost%}
-                    cost: {{ example.cost }}
-                {% endif %}
-                </p>
-            </div>
-            <div class="card-footer">
-                <div class="btn-group" style="width:100%">
-                    {% if isMaster and currentBackpackId == ""%}
-                        <form action="/items/remove/{{currentCampaignId}}/{{ example.id }}?_method=PUT" method="POST">
-                            <input type="submit" value="Remove from {{currentCampaignName}}" class="btn btn-danger">
-                        </form>
-                    {% else %}
-                        {% if currentBackpackId != "" %}
-                            <form action="/backpacks/add/{{ example.id }}?_method=PUT" method="POST">
-                                <input type="submit" value="Add to {{currentBackpackName}}" class="btn btn-success">
-                            </form>
+            <div class="card m-1 mt-0 {{example.category}} " style="width: 18rem;">
+                <a name="{{example.id}}"></a>
+                <div class ="card-header">   
+                    <h6>
+                        <span>
+                            {% if isMaster and example.owner != userId %}
+                                <form action="/items/remove/{{currentCampaignId}}/{{ example.id }}?_method=PUT" method="POST">
+                                    <input type="submit" value="X" class="btn btn-small btn-danger float-end">
+                                </form>
+                            {% endif %}
+                        </span>
+                        <span class="badge bg-success">
+                        {% if example.fromSeed%}
+                            SRD
+                        {% else%}
+                            Homebrew
                         {% endif %}
-                    {% endif %}
+                        </span>
+                        {% if example.owner == userId%}
+                        <span class="badge bg-primary">Owner</span>
+                        {% endif %}
+
+                    
+                </h6>
+                    <h5>{{ example.name }}</h5>
                 </div>
-                <div class ="btn-group" style="width:100%">
-                    <a href="/items/{{ example.id }}" class="btn btn-info">
+                <div class="card-body">
+                    <h5 class="card-title">
+                    {{ example.category }}
+                    </h5>
+                    <p class="card-text text-end">
+                    {% if example.weight and example.weight != "" %}
+                        weight: {{ example.weight }}<br />
+                    {% endif %}
+                    {% if example.cost and example.cost != "" %}
+                        cost: {{ example.cost }}
+                    {% endif %}
+                    </p>
+                </div>
+                <div class="card-footer">
+                    {% if currentBackpackId != "" %}
+                    
+                        <form action="/backpacks/add/{{ example.id }}?_method=PUT" method="POST">
+                            <input type="submit" value="Add to {{currentBackpackName}}" class="btn btn-success" style="width:100%">
+                        </form>
+                    
+                    {% endif %}
+                <div>
+                    <a href="/items/{{ example.id }}" class="btn btn-info" style="width:100%">
                         View {{ example.title }}
                     </a>
                 </div>
