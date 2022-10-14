@@ -10,7 +10,13 @@
     <hr>
     {% assign items_sorted = items | sort: "name"%}
     {% comment %} <h2 class="display-6">All Examples</h2> {% endcomment %}
-    <h2 class="display-8">All Items:</h2>
+    <h2 class="display-8">
+        {% if type %}
+            {{type}}
+        {% else%}
+            Items
+        {% endif %} 
+        in {{currentBackpackName}}:</h2>
     <form action="../../../backpacks/search/" method="GET">
         <fieldset class="input-group mb-3">
             {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
@@ -27,26 +33,20 @@
     </form>  
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="../../../items/">All</a>
+          <a class="nav-link active" aria-current="page" href="../../../backpacks/{{currentBackpackId}}">All</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../../../items/filter/Gear">Gear</a>
+          <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Gear">Gear</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../../../items/filter/Weapon">Weapons</a>
+          <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Weapon">Weapons</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../../../items/filter/Armor">Armor</a>
+          <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Armor">Armor</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="../../../items/filter/Magic%20Item">Magic Items</a>
+            <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Magic%20Item">Magic Items</a>
         </li>
-          {% if isMaster %}
-            <li class="nav-item">
-                <a class="nav-link active" href="/items/mine/">Created by {{username}}</a>
-            </li>
-        {% endif %}
-
     </ul>
     {% if items_sorted.length < 1%}
         <h2 class="display-6">You opened {{currentBackpackName}}, but all that came out was a moth and a puff of dust...</h2>

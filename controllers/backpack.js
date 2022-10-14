@@ -94,18 +94,18 @@ router.get('/search/', (req, res) => {
 })
 
 
-// index that shows only the user's examples
-router.get('/mine', (req, res) => {
-    // destructure user info from req.session
-    const { username, userId, loggedIn } = req.session
-	Item.find({ owner: userId })
-		.then(examples => {
-			res.render('examples/index', { examples, username, loggedIn })
-		})
-		.catch(error => {
-			res.redirect(`/error?error=${error}`)
-		})
-})
+// // index that shows only the user's examples
+// router.get('/mine', (req, res) => {
+//     // destructure user info from req.session
+//     const { username, userId, loggedIn } = req.session
+// 	Item.find({ owner: userId })
+// 		.then(examples => {
+// 			res.render('examples/index', { examples, username, loggedIn })
+// 		})
+// 		.catch(error => {
+// 			res.redirect(`/error?error=${error}`)
+// 		})
+// })
 
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
@@ -113,22 +113,47 @@ router.get('/new', (req, res) => {
 	res.render('examples/new', { username, loggedIn })
 })
 
-// create -> POST route that actually calls the db and makes a new document
-router.post('/', (req, res) => {
-	req.body.ready = req.body.ready === 'on' ? true : false
+// // create -> POST route that actually calls the db and makes a new document
+// router.post('/', (req, res) => {
+// 	req.body.ready = req.body.ready === 'on' ? true : false
 
-	req.body.owner = req.session.userId
-	Item.create(req.body)
-		.then(example => {
-			console.log('this was returned from create', example)
-			res.redirect('/examples')
+// 	req.body.owner = req.session.userId
+// 	Item.create(req.body)
+// 		.then(example => {
+// 			console.log('this was returned from create', example)
+// 			res.redirect('/examples')
+// 		})
+// 		.catch(error => {
+// 			res.redirect(`/error?error=${error}`)
+// 		})
+// })
+
+// get route for filter type of items to display in current backpack
+router.get('/:id/filter/:type', (req, res) => {
+	const backpackId = req.params.id
+	let type= req.params.type
+	Backpack.findById(backpackId)
+		.then(backpack => {
+            req.session.currentBackpackId = backpack.id
+			req.session.currentBackpackName = backpack.name
+			
+			Item.find({ _id: { $in: backpack.items}, inCampaign: req.session.currentCampaignId, category: type })
+				.then(items => {
+				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+				type === 'Weapon'?type ='Weapons':type = type
+				type === 'Magic Item'?type ='Magic Items':type = type					
+				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId, type })
+				})
+				.catch((error) => {
+					res.redirect(`/error?error=${error}`)
+				})
+			
 		})
-		.catch(error => {
+		
+		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
-
-
 
 
 // edit route -> GET that takes us to the edit form view

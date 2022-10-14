@@ -17,7 +17,7 @@
 
 <body>
     <header>
-        {% render './navbar.liquid', loggedIn: loggedIn, username: username, userId: userId %}
+        {% render './navbar.liquid', loggedIn: loggedIn, username: username, userId: userId, currentCampaignId: currentCampaignId, currentCampaignName: currentCampaignName, currentBackpackName: currentBackpackName,currentBackpackId: currentBackpackId %}
     </header>
     <main>
         {% block content %} 

@@ -12,11 +12,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             {% if loggedIn %}
-                {% if currentBackPackId != ''%}
-                <a href="/items" class="nav-link text-light">View All</a>
+                {% if currentCampaignId != "" %}
+                    <a href="/items" class="nav-link text-light">Items Library</a>
                 {% endif %}
-                <a href="/items/new" class="nav-link text-light">New</a>
-                <a href="/items/mine" class="nav-link text-light">My Examples</a>
+                <a href="/campaigns/" class="nav-link text-light">Campaigns</a>
+                {% if currentCampaignId != "" %}
+                    <a href="/backpacks/" class="nav-link text-light">Backpacks</a>
+                {% endif %}
+                {% if currentBackpackId != "" %}
+                    <a href="/backpacks/{{currentBackpackId}}" class="nav-link text-light">{{currentBackpackName}}</a>
+                {% endif %}
                 <a href="/auth/logout" class="nav-link text-light">Log Out</a>
             {% else %}
                 <a href="/auth/signup" class="nav-link text-light">Sign Up</a>
