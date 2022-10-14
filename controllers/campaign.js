@@ -69,8 +69,14 @@ router.get('/addplayer', (req, res) => {
 	req.session.currentBackpackId =''
 	req.session.currentBackpackName = ''
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-	res.render('campaigns/addplayer', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
-})
+	Campaign.findById(currentCampaignId)
+		.then(campaign => {
+		res.render('campaigns/addplayer', { campaign, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+	})
 // put route for adding players
 router.put('/addplayer/:id', (req, res) => {
 	const id = req.params.id
@@ -81,8 +87,50 @@ router.put('/addplayer/:id', (req, res) => {
 			campaign.save()
 			res.redirect('/backpacks')
 		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
 })
-	
+
+// get route for removing player to campaign
+router.get('/removeplayer', (req, res) => {
+	req.session.currentBackpackId =''
+	req.session.currentBackpackName = ''
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	Campaign.findById(currentCampaignId)
+		.then(campaign => {
+		res.render('campaigns/removeplayer', { campaign, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+// put route for removing players
+router.put('/removeplayer/:id', (req, res) => {
+	const campaignId = req.params.id
+	const playerName = req.body.name
+	Campaign.findById(campaignId)
+		.then(campaign => {
+			for ( let i = 0; i < campaign.players.length; i++){
+				if ( campaign.players[i] == playerName) {
+					campaign.players.splice(i,1)
+					i--
+				}
+			}
+			campaign.save()
+			res.redirect('/backpacks')
+		})
+		.catch(error => {
+			res.redirect(`/error?error=${error}`)
+		})
+})
+
+
+// get route to go back to selection for new or existing campaign
+router.get('/select', (req, res) => {
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	res.render('auth/select', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } )
+})
 
 // put route for adding SRD(seeded) items to campaign
 router.put('/import/:id', (req, res) => {

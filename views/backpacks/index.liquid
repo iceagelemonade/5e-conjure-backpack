@@ -8,7 +8,10 @@
         <a href="./new" class = "btn btn-success">Add Backpack</a>
     {% endif %}
     {% if isMaster == true %}
-        <a href="../campaigns/addplayer" class = "btn btn-success">Add Player</a>
+        <div class="btn-group">
+            <a href="../campaigns/addplayer" class = "btn btn-success">Add Player</a>
+            <a href="../campaigns/removeplayer" class = "btn btn-danger">Remove Player</a>
+        </div>
     {% endif %}
     <h4 class="display-10">Backpacks:</h4>
     

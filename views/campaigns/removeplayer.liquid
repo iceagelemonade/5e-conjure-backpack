@@ -1,0 +1,17 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<div class="container-sm">
+    <form action="/campaigns/removeplayer/{{currentCampaignId}}?_method=PUT" method="POST">
+        <fieldset>
+            <legend>Remove player from {{currentCampaignName}}</legend>
+            <label class="form-label">Please Select Player's Username: </label>
+            <select class="form-select" aria-label="Players in Campaign" name="name">
+                {% for player in campaign.players %}
+                    <option value="{{player}}">{{player}}</option>
+                {% endfor %}
+            </select>        
+        </fieldset>
+        <input type="submit" value="Remove Player" class="btn btn-success">
+    </form>
+</div>
+{% endblock %}
