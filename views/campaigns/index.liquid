@@ -1,14 +1,14 @@
 {% layout 'layout.liquid'%}
 {% block content %}
-<div>
+<div class="m-3">
     <h2 class="display-6">Campaigns I Manage:</h2>
     <hr>
     <div class="row">
         {% for campaign in campaigns%}
             {% if campaign.owner == userId%}
-                <div class="card" style="width: 18rem;">
+                <div class="card m-1" style="width: 18rem; height: 40vh;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
-                    <div class="card-body">
+                    <div class="card-body overflow-auto">
                         <P>
                             {{campaign.description}}
                         </P>
@@ -39,9 +39,9 @@
     <div class="row">
         {% for campaign in campaigns%}
             {% if campaign.players contains username %}
-                <div class="card" style="width: 18rem;">
+                <div class="card m-1" style="width: 18rem; height: 40vh;">
                     <h5 class="card-header">{{ campaign.name }}</h5>
-                    <div class="card-body">
+                    <div class="card-body overflow-auto">
                         <P>
                             {{campaign.description}}
                         </P>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="card-footer">
                         <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
-                            <input class="btn btn-info" type="submit" value="Enter">
+                            <input class="btn btn-success" type="submit" value="Enter">
                         </form>
                     </div>
                 </div>                
