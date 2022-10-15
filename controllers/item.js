@@ -151,7 +151,7 @@ router.put('/:id', (req, res) => {
 })
 
 // show route
-router.get('/:id', (req, res) => {
+router.get('/:id/', (req, res) => {
 	const exampleId = req.params.id
 	Item.findById(exampleId)
 		.then(example => {
