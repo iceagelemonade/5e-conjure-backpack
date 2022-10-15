@@ -55,7 +55,7 @@ router.get('/filter/:type', (req, res) => {
 router.get('/search/', (req, res) => {
 	const term = req.query.name
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-	Item.find({ name: term })
+	Item.find({ name: term, inCampaign: currentCampaignId })
 		.then(examples => {
 
 			
