@@ -1,7 +1,12 @@
-{% layout 'layout.liquid' %}
-{% block content %}
-<div class="container-md float-start">
-    <article>
+{% layout 'layout.liquid'%}
+{% block description %}
+<div class="offcanvas offcanvas-start show" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">{{ example.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+<div class="offcanvas-body">
+   <article>
         <h1>
             {{ example.name }}
             <span class="float-end" style="font-size:large;">
@@ -40,7 +45,8 @@
                 <a href="/backpacks/{{ currentBackpackId }}/#{{ example.id }}" class="btn btn-success">Back to {{ currentBackpackName }}</a>
             {% endif %}
             <a href="/items/#{{ example.id }}" class="btn btn-primary">Back to library</a>
-        </div>
+        </div> 
     </article>
+</div>
 </div>
 {% endblock %}

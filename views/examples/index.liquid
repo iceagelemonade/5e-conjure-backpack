@@ -1,6 +1,7 @@
 {% layout 'layout.liquid'%}
+
 {% block content %}
-<div class="container-fluid m-2 pt-8">
+<div class="container-fluid m-3 pt-8">
     {% assign items_sorted = examples | sort: "name"%}
     <h2 class="display-6">{{currentCampaignName}}</h2>
     <h2 class="display-6">{{currentBackpackName}}</h2>
