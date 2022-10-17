@@ -17,7 +17,7 @@ const itemSchema = new Schema(
 			enum: ['Weapon', 'Armor', 'Magic Item', 'Gear']
 		},
 		desc: String,
-		weight: String,
+		weight: Number,
 		cost: String,
 		owner: {
 			type: Schema.Types.ObjectID,

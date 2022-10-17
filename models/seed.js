@@ -32,6 +32,15 @@ const getCategory = (str) => {
     return value
 }
 
+const getContents = (contents) => {
+    let desc = "Contains:<br />"
+    contents.forEach(content => {
+        let append = `${content.quantity}x ${content.item.name}<br />`
+        desc = desc + append
+    })
+    return desc
+}
+
 const getDesc = (obj) => {
     let desc = ''
     if (obj.name == "Net") {
@@ -55,11 +64,16 @@ const getDesc = (obj) => {
                 desc = `${obj.armor_category} Armor <br /> Armor Class: ${obj.armor_class.base}`
                 break;
             default:
-                let description = '' 
-                obj.desc.forEach((line) => {
-                    description = description + line + '\n'
-                    })
-                desc = description
+                
+                if (obj.desc.length === 0 && obj.contents.length > 0) {
+                    desc = getContents(obj.contents)
+                } else {
+                    let description = ''
+                    obj.desc.forEach((line) => {
+                        description = description + line + '\n'
+                        })
+                    desc = description
+                }
         }
     }
     return desc
@@ -202,4 +216,4 @@ let checkTimer = setInterval(() => {
         db.close()
         clearInterval(checkTimer)
     }
-}, 500)
+}, 1500)
