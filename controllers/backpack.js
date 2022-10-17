@@ -240,13 +240,7 @@ router.put('/:backpackId/:itemId/:all', (req, res) => {
 			for ( let i = 0; i < backpack.items.length; i++){
 				if ( backpack.items[i] == itemId) {
 					backpack.items.splice(i,1)
-					console.log(removeAll, i)
-					if (removeAll == "all") {
-						i--
-					} else {
-						i = backpack.items.length
-					}
-					// removeAll==true?i--:i = backpack.items.length
+					removeAll=="all"?i--:i = backpack.items.length
 				}
 			}
 			

@@ -32,7 +32,7 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
+                        <form action="/campaigns/enter/{{campaign.id}}/master?_method=PUT" method="POST">
                             <a href="/campaigns/{{ campaign.id }}/edit" class="btn btn-primary">
                                 Edit
                             </a>
@@ -65,7 +65,7 @@
                         </ul>
                     </div>
                     <div class="card-footer">
-                        <form action="/campaigns/{{campaign.id}}/enter?_method=PUT" method="POST">
+                        <form action="/campaigns/enter/{{campaign.id}}/player?_method=PUT" method="POST">
                             <input class="btn btn-success" type="submit" value="Enter">
                         </form>
                     </div>

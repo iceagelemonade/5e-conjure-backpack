@@ -1,9 +1,16 @@
 {% layout 'layout.liquid' %}
 {% block content %}
+<div class="container-sm m-3">
+    <h2>Welcome, {{username}}</h2>
+    <h5>Are you a Dungeon Master, looking to set a band of adventurers on a new quest? Then perhapes you would like to start a new campaign, and invite players to join.<h5>
+    <a href="/campaigns/new" class="btn btn-lg btn-success">Create New Campaign</a>
+    <h5>Or maybe you are a player trying to join a campaign... or even still, just picking up where you left off.</h5>
+    <a href="/campaigns/" class="btn btn-lg btn-success">Continue Existing Campaign</a>
+</div>
 
-<div class="btn-group btn-group-lg">
+{% comment %} <div class="btn-group btn-group-lg">
     <a href="/campaigns/new" class="btn btn-success">Create New Campaign</a>
     <a href="/campaigns/" class="btn btn-success">Continue Existing Campaign</a>
-</div>
+</div> {% endcomment %}
 
 {% endblock %}

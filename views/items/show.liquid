@@ -25,12 +25,20 @@
         <hr>
         <h3>{{ item.category }}</h3>
 
-        <h5>{{ item.desc }}</h5>
+        <h5>
+            {% for line in desc %}
+                {{ line }}<br />
+            {% endfor %}
+        </h5>
         <hr>
         {% if isMaster and item.secrets or item.secrets and item.isSecret == false %}
             {% if item.secrets != "" %}
                 <h3>Secrets:</h3>
-                <h5>{{item.secrets}}</h5>
+                <h5>
+                    {% for line in secrets %}
+                        {{ line }}<br />
+                    {% endfor %}
+                </h5>
                 <hr>
             {% endif %}
         {% endif %}

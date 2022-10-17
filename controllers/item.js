@@ -112,7 +112,6 @@ router.post('/', (req, res) => {
 	req.body.owner = req.session.userId
 	req.body.inCampaign = req.session.currentCampaignId
 	req.body.isSecret = req.body.isSecret === 'on'?true:false
-
 	Item.create(req.body)
 		.then(item => {
 			res.redirect('/items')
@@ -126,21 +125,20 @@ router.post('/', (req, res) => {
 router.get('/:id/edit', (req, res) => {
 	// we need to get the id
 	const itemId = req.params.id
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Item.findById(itemId)
 		.then(item => {
-			
-			res.render('items/edit', { item })
+			res.render('items/edit', { item, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
 		})
 })
 
-// update route
+// update route for edited items
 router.put('/:id', (req, res) => {
 	const itemId = req.params.id
 	req.body.isSecret = req.body.isSecret === 'on'?true:false
-
 	Item.findByIdAndUpdate(itemId, req.body, { new: true })
 		.then(item => {
 			res.redirect(`/items/${item.id}`)
@@ -156,8 +154,15 @@ router.get('/:id/', (req, res) => {
 	Item.findById(itemId)
 		.then(item => {
             const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-			
-			res.render('items/show', { item, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+			let desc = ''
+			let secrets = ''
+			if (item.desc) {
+				desc = item.desc.split('&&')
+			}
+			if (item.secrets) {
+				secrets = item.secrets.split('&&')
+			}
+			res.render('items/show', { item, desc, secrets, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)

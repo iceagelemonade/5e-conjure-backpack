@@ -4,6 +4,9 @@ body {
     overflow-x:hidden;
 }
 
+.navcolor {
+    background-color: #6E350B;
+}
 
 /* footer {
     width: 100%;

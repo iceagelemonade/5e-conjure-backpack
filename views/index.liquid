@@ -6,7 +6,9 @@
     <p style="max-width: 700px;">
         Conjure Backpack is an app that allows users to digitally manage character inventories for Dungeons & Dragons Fifth Edition. Users can create campaigns (as the Dungeon Master) to manage the available items, or join others (as a player). 
     </p>
-    <a href="/auth/signup" class="btn btn-success">Sign Up</a>
-    <a href="/auth/login" class="btn btn-success">Sign In</a>
+    {% if loggedIn != true %}
+        <a href="/auth/signup" class="btn btn-lg btn-success">Sign Up</a>
+        <a href="/auth/login" class="btn btn-lg btn-success">Sign In</a>
+    {% endif %}
 </div>
 {% endblock %}

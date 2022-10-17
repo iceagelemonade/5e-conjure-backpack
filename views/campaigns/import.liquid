@@ -1,17 +1,35 @@
 {% layout 'layout.liquid' %}
 {% block content %}
-<div class="m-3">
-    <h4>{{campaign.name}}</h4>
+<div class="m-3 row">
+    <div class="container-fluid col" style="border-right: 1px solid gray">
+        <h4>{{campaign.name}}</h4>      
+        <h4>Would you like to import all equipment from the SRD? 
+        <br />
+        <small><i>(this cannot be done later)</i></small>
+        <hr>
+        <form action="/campaigns/import/{{campaign.id}}?_method=PUT" method="POST">
+            <div class="btn-group">
+                <input type="submit" value="Yes" class="btn btn-primary btn-lg">
+                <a href="/campaigns" class ="btn btn-secondary btn-lg">No</a>
+            </div>
+        </form>
 
-    <h4>Would you like to import all equipment from the SRD? 
-    <br />
-    <small><i>(this cannot be done later)</i></small>
-    <hr>
-    <form action="/campaigns/import/{{campaign.id}}?_method=PUT" method="POST">
-        <div class="btn-group">
-            <input type="submit" value="Yes" class="btn btn-primary btn-lg">
-            <a href="/campaigns" class ="btn btn-secondary btn-lg">No</a>
-        </div>
-    </form>
+    </div>
+    
+    <div class="col col-4">
+        
+        <h4>What does importing the SRD mean?</h4>
+        <p>
+            The Systems Refrence Document (SRD), is a document that allows creators the ability to use permitted copywritten information under the Open-Gaming License(OGL). By importing the items from the SRD, you and your players will have access to the 599 different items listed in the SRD by Wizards of the Coast.
+        </p>
+        <p>
+            Allthough you will not be able to edit these items, you will still be able to remove them from your campaign individually. So if Roblin the Goblin Trickster gets a hold of the Wish spell, and wishes for rope to no longer exist, you can remove that item, and POOF it will instantly be gone from all player's backpacks as well.
+        </p>
+        <p>
+            It is recommended that you say 'Yes' to this option.
+        </p>
+        <a href="https://dnd.wizards.com/resources/systems-reference-document">You can learn more about the D&D 5e SRD here.</a>
+
+    </div>
 </div>
 {% endblock %}

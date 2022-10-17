@@ -18,7 +18,7 @@
     <header class="sticky-top">
         {% render './navbar.liquid', loggedIn: loggedIn, username: username, userId: userId, currentCampaignId: currentCampaignId, currentCampaignName: currentCampaignName, currentBackpackName: currentBackpackName,currentBackpackId: currentBackpackId %}
         {% if currentCampaignName != "" and currentCampaignName != null%}
-            <div class="bg-dark ps-3 text-light">
+            <div class="navcolor ps-3 text-light">
                 {% if isMaster %}
                     Dungeon Master
                 {% else %}

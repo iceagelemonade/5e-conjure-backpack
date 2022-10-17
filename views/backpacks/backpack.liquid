@@ -85,8 +85,13 @@
                         <h5 class="card-title">
                         {{ item.category }}
                         <span class="float-end">
-                            Quantity: {{item.qty}}
+                            <form action="/backpacks/add/{{ item.id }}?_method=PUT" method="POST">
+                                Qty: {{item.qty}}                         
+                                <input type="submit" value="+" class="btn btn-success btn-sm">
+                                
+                            </form>        
                         </span>
+                    
                         </h5>
 
                         <p class="card-text text-end">
@@ -99,13 +104,15 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        <div class="btn-group" style="width:100%">
-                            <form action="{{currentBackpackId}}/{{item.id}}/all?_method=PUT" method="POST">
-                                <input type="submit" value="Remove All" class="btn btn-danger">
+                        <div class="row" >
+                            <form class="col" action="/backpacks/{{currentBackpackId}}/{{item.id}}/all?_method=PUT" method="POST">
+                                <input type="submit" value="Remove All" class="form-control btn btn-danger">
                             </form>
-                            <form action="{{currentBackpackId}}/{{item.id}}/one?_method=PUT" method="POST">
-                                <input type="submit" value="Remove 1" class="btn btn-danger">
-                            </form>        
+                            {% if item.qty > 1%}
+                                <form class="col" action="/backpacks/{{currentBackpackId}}/{{item.id}}/one?_method=PUT" method="POST">
+                                    <input type="submit" value="Remove 1" class="form-control btn btn-danger">
+                                </form>
+                            {% endif %}        
                         </div>
                         <div>
                             <a href="/items/{{ item.id }}" class="btn btn-info" style="width:100%">

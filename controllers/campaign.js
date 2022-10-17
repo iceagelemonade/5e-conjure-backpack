@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
 })
 
 
-// new route -> GET route that renders our page with the form
+// new route -> GET route that renders page with the form
 router.get('/new', (req, res) => {
 	const { username, userId, loggedIn } = req.session
 	res.render('campaigns/new', { username, loggedIn, userId })
@@ -121,6 +121,7 @@ router.put('/removeplayer/:id', (req, res) => {
 				}
 			}
 			campaign.save()
+			
 			res.redirect('/backpacks')
 		})
 		.catch(error => {
@@ -177,17 +178,19 @@ router.get('/:id/edit', (req, res) => {
 })
 
 // updates session to have current campaign id
-router.put('/:id/enter', (req, res) => {
+router.put('/enter/:id/:playerType', (req, res) => {
 	const campaignId = req.params.id
+	const playerType = req.params.playerType
+	req.session.isMaster = false
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Campaign.findById(campaignId)
 		.then(campaign => {
 			req.session.currentCampaignId = campaign.id
 			req.session.currentCampaignName = campaign.name
-			if (campaign.owner == userId ) {
+			if (campaign.owner == userId && playerType == 'master') {
 				req.session.isMaster = true
 			}
-			res.redirect(`../../backpacks/`)
+			res.redirect(`/backpacks/`)
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)

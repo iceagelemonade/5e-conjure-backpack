@@ -29,8 +29,13 @@ app.use('/campaigns', CampaignRouter)
 app.use('/backpacks', BackpackRouter)
 
 app.get('/', (req, res) => {
-    const { username, userId, loggedIn } = req.session
-	res.render('index.liquid', { loggedIn, username, userId })
+	req.session.currentCampaignName = ''
+	req.session.currentCampaignId = ''
+	req.session.currentBackpackName = ''
+	req.session.currentBackpackId = ''
+	req.session.isMaster = false
+	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+	res.render('index.liquid', {username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 })
 
 app.get('/error', (req, res) => {
