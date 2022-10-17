@@ -13,6 +13,15 @@
                 {% endif %}
             </span>
         </h1>
+        {% if item.owner == userId and item.owner != null %}         
+        <span class="btn-group mb-3">
+            <a href="/items/{{ item.id }}/edit" class="btn btn-primary">Edit</a>
+            <form action="/items/{{ item.id }}?_method=DELETE" method="POST">
+                <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+        </span>
+        <br />
+    {% endif %}
         <hr>
         <h3>{{ item.category }}</h3>
 
@@ -24,16 +33,6 @@
                 <h5>{{item.secrets}}</h5>
                 <hr>
             {% endif %}
-        {% endif %}
-        {% if item.owner == userId and item.owner != null %}
-            
-            <div class="btn-group mb-3">
-                <a href="/items/{{ item.id }}/edit" class="btn btn-primary">Edit</a>
-                <form action="/items/{{ item.id }}?_method=DELETE" method="POST">
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                </form>
-            </div>
-            <br />
         {% endif %}
         <div class="btn-group">
             {% if currentBackpackId != "" %}

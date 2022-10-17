@@ -84,8 +84,10 @@ router.put('/addplayer/:id', (req, res) => {
 	console.log('an id: ',id)
 	Campaign.findById(id)
 		.then(campaign => {
-			campaign.players.push(req.body.name)
-			campaign.save()
+			if (!campaign.players.includes(req.body.name)) {
+				campaign.players.push(req.body.name)
+				campaign.save()
+			}
 			res.redirect('/backpacks')
 		})
 		.catch(error => {

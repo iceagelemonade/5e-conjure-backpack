@@ -1,7 +1,14 @@
 body {
     background-image: url('certificate_paper_texture_by_icycatelf_d4dy93c.jpg');
     background-repeat: repeat;
+    overflow-x:hidden;
 }
+
+/* footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+} */
 
 /* .card {
     background-image: url('paper-g9d6c55471_1920.jpg');
