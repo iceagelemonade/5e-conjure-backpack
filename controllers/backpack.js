@@ -197,21 +197,26 @@ router.get('/:id', (req, res) => {
 		.then(backpack => {
             req.session.currentBackpackId = backpack.id
 			req.session.currentBackpackName = backpack.name
-			
+			let backpackWeight = 0
 			Item.find({ _id: { $in: backpack.items}, inCampaign: req.session.currentCampaignId })
 				.then(items => {
+					// this lets us show how many of each item is in a backpack without showing the item multiple times. It does not save to the item ahow it will only show on a backpack by backpack basis (which is what we want). we will also use it to calculate the backpacks total weight
 					items.forEach(item => {
 						const itemId = item.id
 						let qty = 0
 						backpack.items.forEach(itemBP => {
 							if (itemBP === item.id) {
 								qty++
+								if (item.weight) {
+									backpackWeight += item.weight
+								}
 							}
 						})
+						
 						item.qty = qty
 					})
 				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session					
-				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+				res.render('backpacks/backpack', { items, backpackWeight, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 				})
 				.catch((error) => {
 					res.redirect(`/error?error=${error}`)
@@ -225,19 +230,23 @@ router.get('/:id', (req, res) => {
 })
 
 // put route for removing items from a backpack
-router.put('/:backpackId/:itemId', (req, res) => {
+router.put('/:backpackId/:itemId/:all', (req, res) => {
 	const backpackId = req.params.backpackId
 	const itemId = req.params.itemId
+	const removeAll = req.params.all
 
 	Backpack.findById(backpackId)
 		.then(backpack => {
-
 			for ( let i = 0; i < backpack.items.length; i++){
 				if ( backpack.items[i] == itemId) {
 					backpack.items.splice(i,1)
-					console.log('new arr ', backpack.items)
-					i--
-					
+					console.log(removeAll, i)
+					if (removeAll == "all") {
+						i--
+					} else {
+						i = backpack.items.length
+					}
+					// removeAll==true?i--:i = backpack.items.length
 				}
 			}
 			

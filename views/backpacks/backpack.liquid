@@ -6,6 +6,7 @@
 <div class="m-3">
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <h4 class="display-6">{{currentBackpackName}}</h4>
+    <b>Total weight: {{backpackWeight}}</b><br />
     <a class="btn btn-success" href="../../items/">Add Items to Backpack</a>
     <hr>
     {% assign items_sorted = items | sort: "name"%}
@@ -98,11 +99,14 @@
                         </p>
                     </div>
                     <div class="card-footer">
-                        
-                            <form action="{{currentBackpackId}}/{{item.id}}?_method=PUT" method="POST">
-                                <input type="submit" value="Remove" class="btn btn-danger" style="width:100%;">
-                            </form>     
-                        
+                        <div class="btn-group" style="width:100%">
+                            <form action="{{currentBackpackId}}/{{item.id}}/all?_method=PUT" method="POST">
+                                <input type="submit" value="Remove All" class="btn btn-danger">
+                            </form>
+                            <form action="{{currentBackpackId}}/{{item.id}}/one?_method=PUT" method="POST">
+                                <input type="submit" value="Remove 1" class="btn btn-danger">
+                            </form>        
+                        </div>
                         <div>
                             <a href="/items/{{ item.id }}" class="btn btn-info" style="width:100%">
                                 View {{ item.title }}
