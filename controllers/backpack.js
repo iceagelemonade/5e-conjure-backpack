@@ -53,7 +53,7 @@ router.get('/new', (req, res) => {
 			}
 		})
 		.catch((error) => {
-			res.redirect(`/error?error=You%20are%20not%20a%20player%20in%20this%20campaign`)
+			res.redirect(`/error?error=${error}`)
 		})
 })
 
@@ -84,7 +84,7 @@ router.post('/', (req, res) => {
 	})
 })
 
-
+// show route for filtering items in bapack via search
 router.get('/search/', (req, res) => {
 	const term = req.query.name
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
@@ -103,11 +103,11 @@ router.get('/search/', (req, res) => {
 			})	
 })
 
-// new route -> GET route that renders our page with the form
-router.get('/new', (req, res) => {
-	const { username, userId, loggedIn } = req.session
-	res.render('items/new', { username, loggedIn })
-})
+// // new route -> GET route that renders our page with the form
+// router.get('/new', (req, res) => {
+// 	const { username, userId, loggedIn } = req.session
+// 	res.render('items/new', { username, loggedIn })
+// })
 
 // show route for deleting backpack
 router.get('/delete/:id', (req, res) => {
@@ -200,6 +200,16 @@ router.get('/:id', (req, res) => {
 			
 			Item.find({ _id: { $in: backpack.items}, inCampaign: req.session.currentCampaignId })
 				.then(items => {
+					items.forEach(item => {
+						const itemId = item.id
+						let qty = 0
+						backpack.items.forEach(itemBP => {
+							if (itemBP === item.id) {
+								qty++
+							}
+						})
+						item.qty = qty
+					})
 				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session					
 				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 				})
