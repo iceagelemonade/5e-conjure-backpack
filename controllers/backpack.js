@@ -106,7 +106,7 @@ router.get('/search/', (req, res) => {
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
 	const { username, userId, loggedIn } = req.session
-	res.render('examples/new', { username, loggedIn })
+	res.render('items/new', { username, loggedIn })
 })
 
 // show route for deleting backpack
@@ -163,10 +163,10 @@ router.get('/:id/filter/:type', (req, res) => {
 // edit route -> GET that takes us to the edit form view
 router.get('/:id/edit', (req, res) => {
 	// we need to get the id
-	const exampleId = req.params.id
-	Item.findById(exampleId)
-		.then(example => {
-			res.render('examples/edit', { example })
+	const itemId = req.params.id
+	Item.findById(itemId)
+		.then(item => {
+			res.render('items/edit', { item })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -175,12 +175,12 @@ router.get('/:id/edit', (req, res) => {
 
 // // update route
 // router.put('/:id', (req, res) => {
-// 	const exampleId = req.params.id
+// 	const itemId = req.params.id
 // 	req.body.ready = req.body.ready === 'on' ? true : false
 
-// 	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
-// 		.then(example => {
-// 			res.redirect(`/examples/${example.id}`)
+// 	Item.findByIdAndUpdate(itemId, req.body, { new: true })
+// 		.then(item => {
+// 			res.redirect(`/items/${item.id}`)
 // 		})
 // 		.catch((error) => {
 // 			res.redirect(`/error?error=${error}`)
@@ -243,10 +243,10 @@ router.put('/:backpackId/:itemId', (req, res) => {
 
 // delete route
 router.delete('/:id', (req, res) => {
-	const exampleId = req.params.id
-	Item.findByIdAndRemove(exampleId)
-		.then(example => {
-			res.redirect('/examples')
+	const itemId = req.params.id
+	Item.findByIdAndRemove(itemId)
+		.then(item => {
+			res.redirect('/items')
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)

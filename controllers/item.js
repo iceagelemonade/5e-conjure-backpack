@@ -27,10 +27,10 @@ router.use((req, res, next) => {
 router.get('/', (req, res) => {
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Item.find({inCampaign: currentCampaignId})
-		.then(examples => {
+		.then(items => {
 			
 			
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+			res.render('items/index', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -41,10 +41,10 @@ router.get('/filter/:type', (req, res) => {
 	const type = req.params.type
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Item.find({inCampaign: currentCampaignId, category: type})
-		.then(examples => {
+		.then(items => {
 			
 			
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+			res.render('items/index', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -56,10 +56,10 @@ router.get('/search/', (req, res) => {
 	const term = req.query.name
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Item.find({ name: term, inCampaign: currentCampaignId })
-		.then(examples => {
+		.then(items => {
 
 			
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+			res.render('items/index', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -88,13 +88,13 @@ router.put('/remove/:campaignId/:itemId', (req, res) => {
 		})
 })
 
-// index that shows only the user's examples
+// index that shows only the user's items
 router.get('/mine', (req, res) => {
     // destructure user info from req.session
     const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Item.find({ owner: userId, inCampaign: currentCampaignId })
-		.then(examples => {
-			res.render('examples/index', { examples, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+		.then(items => {
+			res.render('items/index', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch(error => {
 			res.redirect(`/error?error=${error}`)
@@ -104,7 +104,7 @@ router.get('/mine', (req, res) => {
 // new route -> GET route that renders our page with the form
 router.get('/new', (req, res) => {
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
-	res.render('examples/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+	res.render('items/new', { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 })
 
 // create -> POST route that actually calls the db and makes a new document
@@ -129,7 +129,7 @@ router.get('/:id/edit', (req, res) => {
 	Item.findById(itemId)
 		.then(item => {
 			
-			res.render('examples/edit', { item })
+			res.render('items/edit', { item })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -138,12 +138,12 @@ router.get('/:id/edit', (req, res) => {
 
 // update route
 router.put('/:id', (req, res) => {
-	const exampleId = req.params.id
+	const itemId = req.params.id
 	req.body.isSecret = req.body.isSecret === 'on'?true:false
 
-	Item.findByIdAndUpdate(exampleId, req.body, { new: true })
-		.then(example => {
-			res.redirect(`/items/${example.id}`)
+	Item.findByIdAndUpdate(itemId, req.body, { new: true })
+		.then(item => {
+			res.redirect(`/items/${item.id}`)
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -152,12 +152,12 @@ router.put('/:id', (req, res) => {
 
 // show route
 router.get('/:id/', (req, res) => {
-	const exampleId = req.params.id
-	Item.findById(exampleId)
-		.then(example => {
+	const itemId = req.params.id
+	Item.findById(itemId)
+		.then(item => {
             const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 			
-			res.render('examples/show', { example, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
+			res.render('items/show', { item, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId })
 		})
 		.catch((error) => {
 			res.redirect(`/error?error=${error}`)
@@ -166,9 +166,9 @@ router.get('/:id/', (req, res) => {
 
 // delete route
 router.delete('/:id', (req, res) => {
-	const exampleId = req.params.id
-	Item.findByIdAndRemove(exampleId)
-		.then(example => {
+	const itemId = req.params.id
+	Item.findByIdAndRemove(itemId)
+		.then(item => {
 			res.redirect('/items')
 		})
 		.catch(error => {
@@ -179,12 +179,12 @@ router.delete('/:id', (req, res) => {
 
 
 
-// 	Example.find({})
-// 		.then(examples => {
+// 	item.find({})
+// 		.then(items => {
 // 			const username = req.session.username
 // 			const loggedIn = req.session.loggedIn
 			
-// 			res.render('examples/index', { examples, username, loggedIn })
+// 			res.render('items/index', { items, username, loggedIn })
 // 		})
 // 		.catch(error => {
 // 			res.redirect(`/error?error=${error}`)

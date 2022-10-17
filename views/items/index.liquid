@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container-fluid m-3 pt-8">
-    {% assign items_sorted = examples | sort: "name"%}
+    {% assign items_sorted = items | sort: "name"%}
     <h2 class="display-6">{{currentCampaignName}}</h2>
     <h2 class="display-6">{{currentBackpackName}}</h2>
     <hr>
@@ -14,7 +14,7 @@
     <h2 class="display-8">Item Library:</h2>
     <form action="../../../items/search/" method="GET">
         <fieldset class="input-group mb-3" style="max-width:500px">
-            {% comment %} <label for="exampleDataList" class="form-label">Search for an Item</label> {% endcomment %}
+            {% comment %} <label for="itemDataList" class="form-label">Search for an Item</label> {% endcomment %}
             <input class="form-control" list="datalistOptions" id="dataList" name ="name" placeholder="Type to search items..." autocomplete="off">
             <input type="submit" value="Search" class="btn btn-primary">
                 
@@ -53,57 +53,57 @@
         <h2 class="display-6">{{username}} opened the manifest, but there was nothing there.</h2>
     {% endif %}
     <div class="row">     
-        {% for example in items_sorted %}
+        {% for item in items_sorted %}
             <div class="card m-1 mt-0" style="width: 18rem;">
-                <a class ="anchor" name="{{example.id}}"></a>
-                <div class ="card-header {{example.category}} ">   
+                <a class ="anchor" name="{{item.id}}"></a>
+                <div class ="card-header {{item.category}} ">   
                     <h6>
                         <span>
-                            {% if isMaster and example.owner != userId %}
-                                <form action="/items/remove/{{currentCampaignId}}/{{ example.id }}?_method=PUT" method="POST">
+                            {% if isMaster and item.owner != userId %}
+                                <form action="/items/remove/{{currentCampaignId}}/{{ item.id }}?_method=PUT" method="POST">
                                     <input type="submit" value="X" class="btn btn-small btn-danger float-end">
                                 </form>
                             {% endif %}
                         </span>
                         {% if isMaster %}
                             <span class="badge bg-success">
-                                {% if example.fromSeed%}
+                                {% if item.fromSeed%}
                                     SRD
                                 {% else%}
                                     Homebrew
                                 {% endif %}
                             </span>
-                            {% if example.owner == userId%}
+                            {% if item.owner == userId%}
                                 <span class="badge bg-primary">Owner</span>
                             {% endif %}
                         {% endif %}                   
                 </h6>
-                    <h5>{{ example.name }}</h5>
+                    <h5>{{ item.name }}</h5>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">
-                    {{ example.category }}
+                    {{ item.category }}
                     </h5>
                     <p class="card-text text-end">
-                    {% if example.weight and example.weight != "" %}
-                        weight: {{ example.weight }}<br />
+                    {% if item.weight and item.weight != "" %}
+                        weight: {{ item.weight }}<br />
                     {% endif %}
-                    {% if example.cost and example.cost != "" %}
-                        cost: {{ example.cost }}
+                    {% if item.cost and item.cost != "" %}
+                        cost: {{ item.cost }}
                     {% endif %}
                     </p>
                 </div>
                 <div class="card-footer">
                     {% if currentBackpackId != "" %}
                     
-                        <form action="/backpacks/add/{{ example.id }}?_method=PUT" method="POST">
+                        <form action="/backpacks/add/{{ item.id }}?_method=PUT" method="POST">
                             <input type="submit" value="Add to {{currentBackpackName}}" class="btn btn-success" style="width:100%">
                         </form>
                     
                     {% endif %}
                 <div>
-                    <a href="/items/{{ example.id }}" class="btn btn-info" style="width:100%">
-                        View {{ example.title }}
+                    <a href="/items/{{ item.id }}" class="btn btn-info" style="width:100%">
+                        View
                     </a>
                 </div>
             </div>

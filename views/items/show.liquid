@@ -1,0 +1,46 @@
+{% layout 'layout.liquid' %}
+{% block content %}
+<div class="container-md float-start">
+    <article>
+        <h1>
+            {{ item.name }}
+            <span class="float-end" style="font-size:large;">
+                {% if item.weight and item.weight != "" %}
+                    weight: {{ item.weight }}<br />
+                {% endif %}
+                {% if item.cost and item.cost != ""%}
+                    cost: {{ item.cost }}
+                {% endif %}
+            </span>
+        </h1>
+        <hr>
+        <h3>{{ item.category }}</h3>
+
+        <h5>{{ item.desc }}</h5>
+        <hr>
+        {% if isMaster and item.secrets or item.secrets and item.isSecret == false %}
+            {% if item.secrets != "" %}
+                <h3>Secrets:</h3>
+                <h5>{{item.secrets}}</h5>
+                <hr>
+            {% endif %}
+        {% endif %}
+        {% if item.owner == userId and item.owner != null %}
+            
+            <div class="btn-group mb-3">
+                <a href="/items/{{ item.id }}/edit" class="btn btn-primary">Edit</a>
+                <form action="/items/{{ item.id }}?_method=DELETE" method="POST">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </div>
+            <br />
+        {% endif %}
+        <div class="btn-group">
+            {% if currentBackpackId != "" %}
+                <a href="/backpacks/{{ currentBackpackId }}/#{{ item.id }}" class="btn btn-success">Back to {{ currentBackpackName }}</a>
+            {% endif %}
+            <a href="/items/#{{ item.id }}" class="btn btn-primary">Back to library</a>
+        </div>
+    </article>
+</div>
+{% endblock %}
