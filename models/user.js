@@ -12,9 +12,7 @@ const UserSchema = new Schema(
 		password: { 
 			type: String, 
 			required: true 
-		},
-		currentCampaign: String,
-		isMaster: Boolean,
+		}
 	},
 	{ timestamps: true }
 )
