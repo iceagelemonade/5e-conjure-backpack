@@ -17,6 +17,7 @@ const axios = require('axios').default
 ///////////////////////////////////////
 // first we need our connection saved to a variable for easy refrence
 const db = mongoose.connection
+// these top functions allow us to take data from various parts of the API and build them into our four categories and generate descriptions as used in the app
 const getCategory = (str) => {
     let value = ''
     switch (str) {
@@ -40,7 +41,7 @@ const getContents = (contents) => {
     })
     return desc
 }
-
+// special code had to be made for the Net, because while it is classified as a weapon it does not follow the rules of all the others
 const getDesc = (obj) => {
     let desc = ''
     if (obj.name == "Net") {
@@ -87,14 +88,14 @@ const getDescMagic = (arr) => {
     return description
 }
 
-
+// this timer terminates our connection if the seed cannot pull all of the items. just a safety measure
 let timer = setTimeout(() => {
     console.log('Something went wrong. Please drop database before trying again.')
     db.close()
 }, 45000)
 
 let loaded = 0
-
+// this pulls from the equipment list
 db.on('open', () => {
     let list = []
     let url = []        
@@ -152,7 +153,7 @@ db.on('open', () => {
     })
 
 })
-
+// this pulls from the magic-items list... both happen simultanously
 db.on('open', () => {
     let list = []
     let url = []        
@@ -209,7 +210,7 @@ db.on('open', () => {
     })
 
 })
-
+// this is how we verify both lists have been written, then after 5 seconds (to ensure mongoDB is done writting) it will close the connection
 let checkTimer = setInterval(() => {
     if(loaded === 2) {
         clearTimeout(timer)

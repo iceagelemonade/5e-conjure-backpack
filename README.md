@@ -26,7 +26,6 @@ This will install node and all dependencies from package.json.
 - method-overide - allows app to use all REST routes
 - mongoose - allows for MongoDB object modeling
 - morgan - used for logging HTTP requests
-- nodemon - restarts serve connection automatically upon any changes
 
 *The most recent version of axios seems to have some bugs that prevent the seed script from running. Please use the version as is in package.json ("0.27.2").
 
