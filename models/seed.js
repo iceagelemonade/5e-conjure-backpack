@@ -216,4 +216,4 @@ let checkTimer = setInterval(() => {
         db.close()
         clearInterval(checkTimer)
     }
-}, 1500)
+}, 5000)
