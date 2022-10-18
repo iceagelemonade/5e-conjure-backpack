@@ -31,7 +31,7 @@
             {% endfor %}
         </h5>
         <hr>
-        {% if isMaster and item.secrets or item.secrets and item.isSecret == false %}
+        {% if item.secrets and isMaster or item.isSecret == false %}
             {% if item.secrets != "" %}
                 <h3>Secrets:</h3>
                 <h5>
