@@ -22,8 +22,10 @@
                 {% if currentBackpackId != "" %}
                     <a href="/backpacks/{{currentBackpackId}}" class="nav-link text-light">{{currentBackpackName}}</a>
                 {% endif %}
+                <a href="/help" class="nav-link text-light">Help</a>
                 <a href="/auth/logout" class="nav-link text-light">Log Out</a>
             {% else %}
+                <a href="/help" class="nav-link text-light">Help</a>
                 <a href="/auth/signup" class="nav-link text-light">Sign Up</a>
                 <a href="/auth/login" class="nav-link text-light">Sign In</a>
             {% endif %}

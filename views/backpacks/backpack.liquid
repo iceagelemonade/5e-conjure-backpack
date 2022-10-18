@@ -7,7 +7,7 @@
     <h4 class="display-6">{{currentCampaignName}}</h4>
     <h4 class="display-6">{{currentBackpackName}}</h4>
     <b>Total weight: {{backpackWeight}}</b><br />
-    <a class="btn btn-success" href="../../items/">Add Items to Backpack</a>
+    <a class="btn btn-success" href="/items/">Add Items to Backpack</a>
     <hr>
     {% assign items_sorted = items | sort: "name"%}
     {% comment %} <h2 class="display-6">All items</h2> {% endcomment %}
@@ -34,19 +34,19 @@
     </form>  
     <ul class="nav nav-tabs">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="../../../backpacks/{{currentBackpackId}}">All</a>
+          <a class="nav-link active" aria-current="page" href="/backpacks/{{currentBackpackId}}">All</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Gear">Gear</a>
+          <a class="nav-link active" href="/backpacks/{{currentBackpackId}}/filter/Gear">Gear</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Weapon">Weapons</a>
+          <a class="nav-link active" href="/backpacks/{{currentBackpackId}}/filter/Weapon">Weapons</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Armor">Armor</a>
+          <a class="nav-link active" href="/backpacks/{{currentBackpackId}}/filter/Armor">Armor</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="../../../backpacks/{{currentBackpackId}}/filter/Magic%20Item">Magic Items</a>
+            <a class="nav-link active" href="/backpacks/{{currentBackpackId}}/filter/Magic%20Item">Magic Items</a>
         </li>
     </ul>
     {% if items_sorted.length < 1%}

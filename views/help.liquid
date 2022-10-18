@@ -1,0 +1,98 @@
+{% layout "layout.liquid" %}
+{% block content %}
+<div class="m-3 container-md">
+    <h1>Conjure Backpack Guide</h1>
+    <h4> Table of Contents</h4>
+    <ul>
+        <li>
+            <a href="#new-campaign">Creating a new Campaign</a>
+        </li>
+        <li>
+            <a href="#campaigns">Campaigns</a>
+        </li>
+        <li>
+            <a href="#library">Items Library</a>
+        </li>
+        <li>
+            <a href="#search">Searching Items</a>
+        </li>
+    </ul>
+    <a class="anchor" name="new-campaign"></a>
+    <h4>Creating a new Campaign</h4>
+    <p>
+        After Logging in you will be presented with two opitions:
+        <li>
+            <a class="btn btn-sm btn-success">Create New Campaign</a>
+        </li>
+        <li>
+            <a class="btn btn-sm btn-success">Continue Existing Campaign</a>
+        </li>
+    </p>
+    <p>
+        Selecting the first will allow you to start a new campaign as the dungeon master. After entering a name(required) and a description(optional), you will be asked if you wish to import the items from the SRD. This will give you access to nearly 600 items present in the D&D 5th Edition Player's Handbook. More information can be found on the prompt. 
+    </p>
+    <p>
+        After making your selection, you will be brought to the campaign selection screen which is divided into two parts:
+        <li>
+            Campaigns I Manage
+            <li>
+                These are campaigns you created
+            </li>
+        </li> 
+        <li>
+            Campaigns I Play In
+            <li>
+                These are campaigns other's created that you were added to
+            </li>
+        </li> 
+    </p>
+    <a class="anchor" name="campaigns"></a>
+    <h4>Campaigns You Created</h4>
+    <p>
+        Once selecting campaign by pressing <a class="btn btn-sm btn-success">Enter</a>, you will be brought to the "Backpacks" page. From here you will be able to add and remove players by clicking on the appropriate buttons.
+    </p>
+    <p> 
+        On the "Backpacks" page, you can see all of your player's backpacks. While Dungeon Master's can view, remove, and add items to players' backpacks, only players can create them.
+        <br />
+        <i>(Tip: If you wish to use this app, but your DM doesn't, you can start a campaign and add yourself as a player to access all features)</i>
+    </p>
+    <h4>Campaigns You Play In</h4>
+    <p>
+        Once a DM has added you to a campaign, you will see it on this page. By entering the campaign, you will be able to add backpacks, and edit or remove any that you made
+    </p>
+    <a class="anchor" name="library"></a>
+    <h4>Items Library</h4>
+    <p>
+        By selecting <a class="btn btn-sm btn-success">Add items to Backpack</a> after opening a backpack, or the "Items Lbrary" link in the navigation bar, you will see a list of all items included in the current campaign.
+    </p>
+    <p>
+        If you are the Dungeon Master, you will be able to create new items from this page, add items to the currently selected backpack, and view the full description of items by clicking the button labeled "View". Dungeon Masters also have the ability to remove any items they did not create from the campaign by pressing <a class="btn btn-small btn-danger">X</a>.
+    </p>
+    <p>
+        Players can still add items to their backpack, and view the description, but are unable to remove items from the campaign, or create new ones.
+    </p>
+    <a class="anchor" name="search"></a>
+    <h4>Searching Items</h4>
+    <p>
+        From either the Backpack inventory screen or the Items Library, users are able to search for items. Once you start typing in the search bar, a list of possible entries will display. It is strongly recommended that you select the relevent option before clicking the "Search" button, as the search can only reveal complete names and is case sensitive.
+    </p>
+    <p>
+        Below the search bar are filter tabs. Clicking them will filter the list down to the appropriate category.
+        <ul>
+            In this app, there are only 4 categories for all items:
+            <li>
+                Gear
+            </li>
+            <li>
+                Weapons
+            </li>
+            <li>
+                Armor
+            </li>
+            <li>
+                Magic Items
+            </li>
+        </ul>
+    </p>
+</div>
+{% endblock %}
