@@ -1,6 +1,7 @@
 ///////////////////////////////////////
 // Import Dependencies
 ///////////////////////////////////////
+// Remove this import
 const { AggregationCursor } = require('./connection')
 const mongoose = require('./connection')
 const Item = require('./item')
@@ -10,7 +11,7 @@ const axios = require('axios').default
 
 
 // This script will be run with the command in the terminal `npm run seed`
-
+// Nit for file: You did a lot of wonderful work here and should be proud of this. Since there are a lot of moving parts here leaving code comments on what these functions are doing and what some of these checks are doing is going to be key in maintining this project long term.
 
 ///////////////////////////////////////
 // Seed Script Code
@@ -97,6 +98,7 @@ let timer = setTimeout(() => {
 let loaded = 0
 // this pulls from the equipment list
 db.on('open', () => {
+    // Nit: remove unused `list`
     let list = []
     let url = []        
     axios('https://www.dnd5eapi.co/api/equipment')
@@ -116,6 +118,7 @@ db.on('open', () => {
     })
     .then(url => {
         let count = 0
+        // Nit: remove unused index here
         url.forEach((link, ind) => {
             axios(`https://www.dnd5eapi.co${link}`)
             .then(response => {
@@ -126,6 +129,7 @@ db.on('open', () => {
                 obj.category = getCategory(data.equipment_category.index)
                 obj.desc = getDesc(data)
                 obj.weight = data.weight
+                // This is not human reabable. Leave a comment on what this does and put spaces in the correct places
                 obj.cost=data.cost?data.cost.quantity+data.cost.unit:null
                 obj.owner = null
                 obj.fromSeed = true
@@ -137,6 +141,7 @@ db.on('open', () => {
                 count ++
                 // console.log(count)
                 if (count === url.length) {
+                    // Nit: remove console.log
                     console.log('Basic items imported')
                     loaded++
                 }
@@ -155,6 +160,7 @@ db.on('open', () => {
 })
 // this pulls from the magic-items list... both happen simultanously
 db.on('open', () => {
+    // Nit: remove unused `list`
     let list = []
     let url = []        
     axios('https://www.dnd5eapi.co/api/magic-items')
@@ -169,6 +175,7 @@ db.on('open', () => {
         arr.forEach(item => {
             url.push(item.url)
         })
+        // Nit: remove console.log
         console.log('Magic items to import: ',url.length)
         return url
     })

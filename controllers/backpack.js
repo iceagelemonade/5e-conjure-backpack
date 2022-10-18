@@ -3,6 +3,7 @@ const express = require('express')
 const Backpack = require('../models/backpack')
 const Campaign = require('../models/campaign')
 const Item = require('../models/item')
+// Nit: remove unused import
 const axios = require('axios').default
 
 
@@ -79,12 +80,14 @@ router.post('/', (req, res) => {
 	req.body.owner = userId
 	
 	Backpack.create(req.body)
+	// Nit: remove unused `backpack` here can just ignore the passing of anything here () => {}
 	.then(backpack => {
 		res.redirect('/backpacks')
 	})
 })
 
 // show route for filtering items in bapack via search
+// Remove the ending `/` here. In Express we always keep the leading `/` and leave off the ending `/`. In other frameworks we will see that this changes but here we should follow this rule. Should be just `/search`
 router.get('/search/', (req, res) => {
 	const term = req.query.name
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
@@ -126,6 +129,7 @@ router.get('/delete/:id', (req, res) => {
 router.delete('/delete/:id', (req, res) => {
 	const backpackId = req.params.id
 	Backpack.findByIdAndRemove(backpackId)
+	// Nit: remove unused `backpack` here can just pass nothing () => {}
 		.then(backpack => {
 			res.redirect('/backpacks')
 		})
@@ -144,6 +148,7 @@ router.get('/:id/filter/:type', (req, res) => {
 			Item.find({ _id: { $in: backpack.items}, inCampaign: req.session.currentCampaignId, category: type })
 				.then(items => {
 				const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
+				// Add some comments here on what logic you are doing here and wha the expected behaivor is. When doing one line fancy things we always want to leave a comment for other devs that might be looking at this and for yourself in about 6 months when you come back to this code
 				type === 'Weapon'?type ='Weapons':type = type
 				type === 'Magic Item'?type ='Magic Items':type = type					
 				res.render('backpacks/backpack', { items, username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId, type })
@@ -202,6 +207,7 @@ router.get('/:id', (req, res) => {
 				.then(items => {
 					// this lets us show how many of each item is in a backpack without showing the item multiple times. It does not save to the item ahow it will only show on a backpack by backpack basis (which is what we want). we will also use it to calculate the backpacks total weight
 					items.forEach(item => {
+						// Nit: remove unused `itemId`
 						const itemId = item.id
 						let qty = 0
 						backpack.items.forEach(itemBP => {
@@ -243,7 +249,7 @@ router.put('/:backpackId/:itemId/:all', (req, res) => {
 					removeAll=="all"?i--:i = backpack.items.length
 				}
 			}
-			
+			// Nit: should return here. Best practice for Mongoose `.save()` middleware
 			backpack.save()
 			res.redirect(`/backpacks/${backpackId}`)
 		})
@@ -258,6 +264,7 @@ router.put('/:backpackId/:itemId/:all', (req, res) => {
 router.delete('/:id', (req, res) => {
 	const itemId = req.params.id
 	Item.findByIdAndRemove(itemId)
+	// Nit: remove unused `item`
 		.then(item => {
 			res.redirect('/items')
 		})

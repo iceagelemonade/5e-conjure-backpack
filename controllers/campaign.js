@@ -2,8 +2,10 @@
 const express = require('express')
 const Campaign = require('../models/campaign')
 const Backpack = require('../models/backpack')
+// Nit: remove unused User
 const User = require('../models/user')
 const Item = require('../models/item')
+// Nit: remove unused unused `axios` call
 const axios = require('axios').default
 
 
@@ -52,6 +54,7 @@ router.get('/new', (req, res) => {
 
 // create -> POST route that actually calls the db and makes a new document
 router.post('/', (req, res) => {
+	// Nit: remove console.log 
 	console.log(req.body)
 	req.body.owner = req.session.userId
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
@@ -81,13 +84,16 @@ router.get('/addplayer', (req, res) => {
 // put route for adding players
 router.put('/addplayer/:id', (req, res) => {
 	const id = req.params.id
+	// Nit: remove console.log
 	console.log('an id: ',id)
 	Campaign.findById(id)
 		.then(campaign => {
 			if (!campaign.players.includes(req.body.name)) {
 				campaign.players.push(req.body.name)
+				// should return here
 				campaign.save()
 			}
+			// Since you will have to return above this will become `unreachable code` move this to the next `.then()` in the promise chain.
 			res.redirect('/backpacks')
 		})
 		.catch(error => {
@@ -120,8 +126,10 @@ router.put('/removeplayer/:id', (req, res) => {
 					i--
 				}
 			}
+			// Should return here. Best practice for Mongoose `.save()`
 			campaign.save()
 			
+			// Since you will have to return above this will become `unreachable code` move this to the next `.then()` in the promise chain.
 			res.redirect('/backpacks')
 		})
 		.catch(error => {
@@ -148,11 +156,14 @@ router.put('/import/:id', (req, res) => {
 		.then(items => {
 			
 			items.forEach(item => {
+				// Nit: remove console.logs
 				console.log(item)
 				item.inCampaign.push(campaignId)
+				// Should return here. Same as above
 				item.save()
 			})
 		})
+		// Nit: can remove `items` since it's unused
 		.then(items => {
 			res.redirect('/campaigns')
 		})
@@ -182,11 +193,16 @@ router.put('/enter/:id/:playerType', (req, res) => {
 	const campaignId = req.params.id
 	const playerType = req.params.playerType
 	req.session.isMaster = false
+	// Nit: most of these being destructured out can be remove because they are unused. Only destructor what is being used in this scope
 	const { username, loggedIn, userId, isMaster, currentCampaignName, currentCampaignId, currentBackpackName, currentBackpackId } = req.session
 	Campaign.findById(campaignId)
 		.then(campaign => {
 			req.session.currentCampaignId = campaign.id
 			req.session.currentCampaignName = campaign.name
+			// Good best practice that we have to touched on in class but I'll point it out here. When we start to have mulitple checks in a condition it's a good idea to name it something meaningful then pass it in. This makes our code more human readable.  Ex:
+			// const isOwnerAndMaster = campaign.owner == userId && playerType == 'master'
+			// if (isOwnerAndMaster) {....}
+			// this is not really needed here because it's already human readable but these conditions can become very confusing very quickly
 			if (campaign.owner == userId && playerType == 'master') {
 				req.session.isMaster = true
 			}
@@ -205,6 +221,7 @@ router.put('/:id', (req, res) => {
 	const campaignId = req.params.id
 
 	Campaign.findByIdAndUpdate(campaignId, { name: req.body.name, description: req.body.description}, { new: true })
+	// Nit: can remove unused `campaign`
 		.then(campaign => {
 			res.redirect('/campaigns')
 		})
@@ -232,16 +249,20 @@ router.delete('/delete/:id', (req, res) => {
 	Backpack.find({campaign: campaignId})
 		.then(backpacks => {
 			backpacks.forEach(backpack => {
+				// Nit: remove console.log
 				console.log(backpack.id)
 				Backpack.findByIdAndRemove(backpack.id)
+				// empty `.then()` here remove it or put something in it
 					.then()
 					.catch(error => {
 						res.redirect(`/error?error=${error}`)
 						})
 			})
 		})
+		// Nit: can remove unused `drop`
 		.then(drop =>{
 			Campaign.findByIdAndRemove(campaignId)
+			// Nit: can remove unused `campaign`
 				.then(campaign => {
 				res.redirect('/campaigns')
 				})

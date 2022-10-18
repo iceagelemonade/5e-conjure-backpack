@@ -1,6 +1,7 @@
 // Import Dependencies
 const express = require('express')
 const Item = require('../models/item')
+// Nit: can remove unused `axios`
 const axios = require('axios').default
 
 
@@ -80,6 +81,7 @@ router.put('/remove/:campaignId/:itemId', (req, res) => {
 					i--
 				}
 			}
+			// should return here. Same comments as campaign.js :)
 			item.save()
 			res.redirect(`/items`)
 		})
@@ -113,6 +115,7 @@ router.post('/', (req, res) => {
 	req.body.inCampaign = req.session.currentCampaignId
 	req.body.isSecret = req.body.isSecret === 'on'?true:false
 	Item.create(req.body)
+	// Nit: can remove unused `item`
 		.then(item => {
 			res.redirect('/items')
 		})
@@ -138,6 +141,7 @@ router.get('/:id/edit', (req, res) => {
 // update route for edited items
 router.put('/:id', (req, res) => {
 	const itemId = req.params.id
+	// Nit: ending ternary is squished and needs some spacing
 	req.body.isSecret = req.body.isSecret === 'on'?true:false
 	Item.findByIdAndUpdate(itemId, req.body, { new: true })
 		.then(item => {
@@ -173,6 +177,7 @@ router.get('/:id/', (req, res) => {
 router.delete('/:id', (req, res) => {
 	const itemId = req.params.id
 	Item.findByIdAndRemove(itemId)
+	// Nit: remove unused `item`
 		.then(item => {
 			res.redirect('/items')
 		})

@@ -1,6 +1,7 @@
 ////////////////////
 //  Dependencies  //
 ////////////////////
+// Nit: choose either double or single quotes
 require("dotenv").config() // make env variables available
 const express = require("express")
 const middleware = require('./utils/middleware')
@@ -8,6 +9,7 @@ const ItemRouter = require('./controllers/item')
 const UserRouter = require('./controllers/user')
 const CampaignRouter = require('./controllers/campaign')
 const BackpackRouter = require('./controllers/backpack')
+// Nit: remove unused User import
 const User = require("./models/user")
 // SEE MORE DEPENDENCIES IN ./utils/middleware.js
 // user and resource routes linked in ./utils/middleware.js
