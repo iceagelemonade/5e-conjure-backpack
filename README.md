@@ -6,6 +6,10 @@
 Conjure Backpack is an app that allows users to digitally manage character inventories for Dungeons & Dragons Fifth Edition. Users can create campaigns (as the Dungeon Master) to manage the available items, or join others (as a player). This app utilizes the [DND 5e API](https://dnd5eapi/) to seed initial equipment available from the SRD. Dungeon Masters can choose to remove any of these items from their campaign (all are available by default), and of course, create their own.
 This also means that users can add resources found in the standard game materials that aren't included in the [SRD](https://5thsrd.org/) for a more robust collection of resources.
 
+## Deployed Build
+---
+[Check out the deployed build here!](https://conjure-backpack.fly.dev/)
+
 ## Installation Instructions
 ---
 If you wish to run this program locally, do the following:
